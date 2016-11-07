@@ -49,6 +49,7 @@
                                 <!-- set environment variables for program versions -->
                                 <env>
                                     <JAVA_HOME>${java.home}</JAVA_HOME>
+                                    <JRE_SECURITY_FOLDER>${java.home}/jre/lib/security</JRE_SECURITY_FOLDER>
                                     <SSL_TRUSTED_CERTS_FOLDER>${ssl.trusted.certs.folder}</SSL_TRUSTED_CERTS_FOLDER>
                                 </env>
                                 <optimise>${optimise}</optimise>
