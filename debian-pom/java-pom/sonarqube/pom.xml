@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>java-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>sonarqube</artifactId>
+
+    <packaging>docker</packaging>
+
+    <properties>
+        <sonarqube.home>${opt.folder.path}/sonarqube</sonarqube.home>
+        <sonarqube.version>5.6</sonarqube.version>
+        <sonarqube.checksum>841a92d83a4bcb13b5fe022e00c1e0b8</sonarqube.checksum>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>mysql:5.6.29</name>
+                            <alias>mysql-sonarqube</alias>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <volumes>
+                                    <bind>
+                                        <volume>/etc/localtime:/etc/localtime:ro</volume>
+                                        <volume>/etc/timezone:/etc/timezone:ro</volume>
+                                        <volume>${data.folder}/sonarqube/mysql:/var/lib/mysql</volume>
+                                    </bind>
+                                </volumes>
+                                <env>
+                                    <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
+                                    <MYSQL_DATABASE>sonarqube</MYSQL_DATABASE>
+                                    <MYSQL_USER>sonarqube</MYSQL_USER>
+                                    <MYSQL_PASSWORD>sonarqube</MYSQL_PASSWORD>
+                                </env>
+                            </run>
+                        </image>
+                        <image>
+                            <name>${tenant}/${project.artifactId}</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${sonarqube.version}</tag>
+                                </tags>
+                                <from>${tenant}/jdk:8u66</from>
+                                <!-- set environment variables -->
+                                <env>
+                                    <SONARQUBE_HOME>${sonarqube.home}</SONARQUBE_HOME>
+                                    <SONARQUBE_VERSION>${sonarqube.version}</SONARQUBE_VERSION>
+                                </env>
+                                <optimise>${optimise}</optimise>
+                                <volumes>
+                                    <volume>${sonarqube.home}/conf</volume>
+                                    <volume>${sonarqube.home}/data</volume>
+                                    <volume>${sonarqube.home}/extensions</volume>
+                                    <volume>${sonarqube.home}/logs</volume>
+                                </volumes>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/sonarqube.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <workdir>${sonarqube.home}</workdir>
+                                <ports>
+                                    <port>9000</port>
+                                </ports>
+                                <runCmds>
+                                    <!-- download and extract sonarqube to opt folder -->
+                                    <run>wget -q http://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-${sonarqube.version}.zip</run>
+                                    <run>echo "${sonarqube.checksum} sonarqube-${sonarqube.version}.zip" | md5sum -c</run>
+                                    <run>unzip -q sonarqube-${sonarqube.version}.zip -d ${opt.folder.path}</run>
+                                    <run>rm -f sonarqube-${sonarqube.version}.zip</run>
+                                    <run>mv -T ${opt.folder.path}/sonarqube-${sonarqube.version} ${sonarqube.home}</run>
+
+                                    <!-- remove  unused folders -->
+                                    <run>rm -rf ${sonarqube.home}/bin</run>
+                                </runCmds>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <volumes>
+                                    <bind>
+                                        <volume>/etc/localtime:/etc/localtime:ro</volume>
+                                        <volume>/etc/timezone:/etc/timezone:ro</volume>
+                                        <volume>${data.folder}/sonarqube/app/conf:${sonarqube.home}/conf</volume>
+                                        <volume>${data.folder}/sonarqube/app/data:${sonarqube.home}/data</volume>
+                                        <volume>${data.folder}/sonarqube/app/extensions:${sonarqube.home}/extensions</volume>
+                                        <volume>${data.folder}/sonarqube/app/logs:${sonarqube.home}/logs</volume>
+                                    </bind>
+                                </volumes>
+                                <links>
+                                    <link>mysql-sonarqube</link>
+                                </links>
+                                <ports>
+                                    <port>9000:9000</port>
+                                </ports>
+                                <env>
+                                    <SONARQUBE_CONTEXT_PATH>/sonar</SONARQUBE_CONTEXT_PATH>
+                                </env>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

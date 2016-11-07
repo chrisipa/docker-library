@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>ab-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ab</artifactId>
+
+    <packaging>docker</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${tenant}/${project.artifactId}</name>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                </tags>
+                                <from>${tenant}/debian:8</from>
+                                <optimise>${optimise}</optimise>
+                                <runCmds>
+                                    <!-- install additional packages -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get install -y apache2-utils</run>
+                                    <run>apt-get clean</run>
+                                </runCmds>
+                                <entryPoint>
+                                    <exec>
+                                        <args>ab</args>
+                                    </exec>
+                                </entryPoint>
+                            </build>
+                        </image>
+                    </images>
+                    <skipRun>true</skipRun>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

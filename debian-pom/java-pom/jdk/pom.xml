@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>java-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jdk</artifactId>
+
+    <packaging>docker</packaging>
+
+    <properties>
+
+        <java.home>${opt.folder.path}/java</java.home>
+
+        <jdk.version>8u66</jdk.version>
+        <jdk.build>b17</jdk.build>
+        <jdk.folder.name>jdk1.8.0_66</jdk.folder.name>
+        <jdk.path.element>${jdk.version}-${jdk.build}</jdk.path.element>
+        <jdk.file.name>jdk-${jdk.version}-linux-x64.tar.gz</jdk.file.name>
+        <jdk.url>http://download.oracle.com/otn-pub/java/jdk/${jdk.path.element}/${jdk.file.name}</jdk.url>
+        <jdk.checksum>88f31f3d642c3287134297b8c10e61bf</jdk.checksum>
+
+        <ssl.trusted.certs.folder>${opt.folder.path}/ssl/trusted</ssl.trusted.certs.folder>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${tenant}/${project.artifactId}</name>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${jdk.version}</tag>
+                                </tags>
+                                <from>${tenant}/debian:8</from>
+                                <!-- set environment variables for program versions -->
+                                <env>
+                                    <JAVA_HOME>${java.home}</JAVA_HOME>
+                                    <SSL_TRUSTED_CERTS_FOLDER>${ssl.trusted.certs.folder}</SSL_TRUSTED_CERTS_FOLDER>
+                                </env>
+                                <optimise>${optimise}</optimise>
+                                <runCmds>
+                                    <!-- download and extract jdk to opt folder -->
+                                    <run>wget -q --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" ${jdk.url}</run>
+                                    <run>echo "${jdk.checksum} ${jdk.file.name}" | md5sum -c</run>
+                                    <run>tar -zxf ${jdk.file.name} -C ${opt.folder.path}</run>
+                                    <run>mv ${opt.folder.path}/${jdk.folder.name} ${java.home}</run>
+
+                                    <!-- cleanup unnecessary files and folders -->
+                                    <run>rm -f ${jdk.file.name}</run>
+                                    <run>rm -rf ${java.home}/*src.zip</run>
+                                    <run>rm -rf ${java.home}/lib/missioncontrol</run>
+                                    <run>rm -rf ${java.home}/lib/visualvm</run>
+                                    <run>rm -rf ${java.home}/lib/*javafx*</run>
+                                    <run>rm -rf ${java.home}/jre/lib/plugin.jar</run>
+                                    <run>rm -rf ${java.home}/jre/lib/ext/jfxrt.jar</run>
+                                    <run>rm -rf ${java.home}/jre/bin/javaws</run>
+                                    <run>rm -rf ${java.home}/jre/lib/javaws.jar</run>
+                                    <run>rm -rf ${java.home}/jre/lib/desktop</run>
+                                    <run>rm -rf ${java.home}/jre/plugin</run>
+                                    <run>rm -rf ${java.home}/jre/lib/deploy*</run>
+                                    <run>rm -rf ${java.home}/jre/lib/*javafx*</run>
+                                    <run>rm -rf ${java.home}/jre/lib/*jfx*</run>
+                                    <run>rm -rf ${java.home}/jre/lib/amd64/libdecora_sse.so</run>
+                                    <run>rm -rf ${java.home}/jre/lib/amd64/libprism_*.so</run>
+                                    <run>rm -rf ${java.home}/jre/lib/amd64/libfxplugins.so</run>
+                                    <run>rm -rf ${java.home}/jre/lib/amd64/libglass.so</run>
+                                    <run>rm -rf ${java.home}/jre/lib/amd64/libgstreamer-lite.so</run>
+                                    <run>rm -rf ${java.home}/jre/lib/amd64/libjavafx*.so</run>
+                                    <run>rm -rf ${java.home}/jre/lib/amd64/libjfx*.so</run>
+
+                                    <!-- add executables to path -->
+                                    <run>update-alternatives --install "/usr/bin/java" "java" "${java.home}/bin/java" 1</run>
+                                    <run>update-alternatives --set "java" "${java.home}/bin/java"</run>
+                                    <run>update-alternatives --install "/usr/bin/javac" "javac" "${java.home}/bin/javac" 1</run>
+                                    <run>update-alternatives --set "javac" "${java.home}/bin/javac"</run>
+                                    <run>update-alternatives --install "/usr/bin/keytool" "keytool" "${java.home}/bin/keytool" 1</run>
+                                    <run>update-alternatives --set "keytool" "${java.home}/bin/keytool"</run>
+
+                                    <!-- create trusted ssl certs folder -->
+                                    <run>mkdir -p ${ssl.trusted.certs.folder}</run>
+                                </runCmds>
+                                <volumes>
+                                    <volume>${ssl.trusted.certs.folder}</volume>
+                                </volumes>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/java.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <cmd>bash</cmd>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <id>entrypoint-script</id>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                    <skipRun>true</skipRun>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

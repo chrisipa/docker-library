@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>jmeter-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jmeter-with-plugins</artifactId>
+
+    <packaging>docker</packaging>
+
+    <properties>
+        <jmeter.standard.plugin.version>1.3.0</jmeter.standard.plugin.version>
+        <jmeter.standard.plugin.checksum>8dc3fb5db6b2c6c42f49b50c76e739b4</jmeter.standard.plugin.checksum>
+        <jmeter.extras.plugin.version>1.3.1</jmeter.extras.plugin.version>
+        <jmeter.extras.plugin.checksum>03574f97a74c335488e1c4697a97b24e</jmeter.extras.plugin.checksum>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${tenant}/${project.artifactId}</name>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${jmeter.version}</tag>
+                                </tags>
+                                <from>${tenant}/jmeter:${jmeter.version}</from>
+                                <optimise>${optimise}</optimise>
+                                <runCmds>
+                                    <!-- download and extract standard plugins -->
+                                    <run>wget -q http://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-${jmeter.standard.plugin.version}.zip</run>
+                                    <run>echo "${jmeter.standard.plugin.checksum} JMeterPlugins-Standard-${jmeter.standard.plugin.version}.zip" | md5sum -c</run>
+                                    <run>unzip -q -o JMeterPlugins-Standard-${jmeter.standard.plugin.version}.zip -d ${jmeter.home}</run>
+                                    <run>rm -f JMeterPlugins-Standard-${jmeter.standard.plugin.version}.zip</run>
+
+                                    <!-- download and extract extras plugins -->
+                                    <run>wget -q http://jmeter-plugins.org/downloads/file/JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip</run>
+                                    <run>echo "${jmeter.extras.plugin.checksum} JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip" | md5sum -c</run>
+                                    <run>unzip -q -o JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip -d ${jmeter.home}</run>
+                                    <run>rm -f JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip</run>
+                                </runCmds>
+                            </build>
+                        </image>
+                    </images>
+                    <skipRun>true</skipRun>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>jenkins-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jenkins</artifactId>
+
+    <packaging>docker</packaging>
+
+    <properties>
+        <maven.major.version>3</maven.major.version>
+        <maven.version>${maven.major.version}.3.9</maven.version>
+        <maven.checksum>516923b3955b6035ba6b0a5b031fbd8b</maven.checksum>
+        <maven.home>${opt.folder.path}/mvn</maven.home>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${tenant}/${project.artifactId}</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${jenkins.version}</tag>
+                                </tags>
+                                <from>${tenant}/tomcat:7.0.70</from>
+                                <!-- set environment variables -->
+                                <env>
+                                    <JENKINS_HOME>${jenkins.home}</JENKINS_HOME>
+                                    <MAVEN_HOME>${maven.home}</MAVEN_HOME>
+                                </env>
+                                <optimise>${optimise}</optimise>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/jenkins.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <cmd>
+                                    <exec>
+                                        <args>catalina.sh</args>
+                                        <args>run</args>
+                                    </exec>
+                                </cmd>
+                                <workdir>${jenkins.home}</workdir>
+                                <ports>
+                                    <port>5000</port>
+                                </ports>
+                                <runCmds>
+                                    <!-- install additional packages -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get install -y gawk git</run>
+                                    <run>apt-get clean</run>
+
+                                    <!-- download and extract jenkins to webapps folder -->
+                                    <run>wget -q http://ftp.halifax.rwth-aachen.de/jenkins/war/${jenkins.version}/jenkins.war</run>
+                                    <run>echo "${jenkins.checksum} jenkins.war" | md5sum -c</run>
+                                    <run>unzip -q jenkins.war -d ${tomcat.webapps.folder}/jenkins</run>
+                                    <run>rm -f jenkins.war</run>
+
+                                    <!-- download and extract maven to opt folder -->
+                                    <run>wget -q http://archive.apache.org/dist/maven/maven-${maven.major.version}/${maven.version}/binaries/apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
+                                    <run>tar -zxf apache-maven-${maven.version}-bin.tar.gz -C ${opt.folder.path}</run>
+                                    <run>rm -f apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>mv -T ${opt.folder.path}/apache-maven-${maven.version} ${maven.home}</run>
+
+                                    <!-- add executables to path -->
+                                    <run>update-alternatives --install "/usr/bin/mvn" "mvn" "${maven.home}/bin/mvn" 1</run>
+                                    <run>update-alternatives --set "mvn" "${maven.home}/bin/mvn"</run>
+                                </runCmds>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/entrypoint</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/conf</directory>
+                                                <outputDirectory>${catalina.home}/conf</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/ROOT</directory>
+                                                <outputDirectory>${tomcat.webapps.folder}/ROOT</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <volumes>
+                                    <bind>
+                                        <volume>/etc/localtime:/etc/localtime:ro</volume>
+                                        <volume>/etc/timezone:/etc/timezone:ro</volume>
+                                        <volume>${data.folder}/jenkins:${jenkins.home}</volume>
+                                    </bind>
+                                </volumes>
+                                <ports>
+                                    <port>5000:5000</port>
+                                    <port>5080:8080</port>
+                                    <port>5443:8443</port>
+                                </ports>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

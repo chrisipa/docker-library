@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>java-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>nexus</artifactId>
+
+    <packaging>docker</packaging>
+
+    <properties>
+        <sonatype.work>${opt.folder.path}/sonatype-work</sonatype.work>
+        <maven.major.version>3</maven.major.version>
+        <maven.version>${maven.major.version}.3.9</maven.version>
+        <maven.checksum>516923b3955b6035ba6b0a5b031fbd8b</maven.checksum>
+        <maven.home>${opt.folder.path}/mvn</maven.home>
+        <nexus.home>${opt.folder.path}/nexus</nexus.home>
+        <nexus.version>2.12.0-01</nexus.version>
+        <nexus.checksum>6a2e026a6ad299fbfc0bd62ed05a0a85</nexus.checksum>
+        <nexus.context.path>/</nexus.context.path>
+        <nexus.java.opts>$NEXUS_ADDITIONAL_JAVA_OPTS -server -Xmx768m -Xms256m -XX:MaxPermSize=192m -Djava.net.preferIPv4Stack=true</nexus.java.opts>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${tenant}/${project.artifactId}</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${nexus.version}</tag>
+                                </tags>
+                                <from>${tenant}/jdk:8u66</from>
+                                <!-- set environment variables -->
+                                <env>
+                                    <SONATYPE_WORK>${sonatype.work}</SONATYPE_WORK>
+                                    <MAVEN_HOME>${maven.home}</MAVEN_HOME>
+                                    <NEXUS_HOME>${nexus.home}</NEXUS_HOME>
+                                    <NEXUS_CONTEXT_PATH>${nexus.context.path}</NEXUS_CONTEXT_PATH>
+                                    <NEXUS_JAVA_OPTS>${nexus.java.opts}</NEXUS_JAVA_OPTS>
+                                </env>
+                                <optimise>${optimise}</optimise>
+                                <volumes>
+                                    <volume>${sonatype.work}</volume>
+                                </volumes>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/nexus.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <workdir>${nexus.home}</workdir>
+                                <ports>
+                                    <port>8081</port>
+                                </ports>
+                                <runCmds>
+                                    <!-- install additional packages -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get install -y createrepo</run>
+                                    <run>apt-get clean</run>
+
+                                    <!-- download and extract maven to opt folder -->
+                                    <run>wget -q http://archive.apache.org/dist/maven/maven-${maven.major.version}/${maven.version}/binaries/apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
+                                    <run>tar -zxf apache-maven-${maven.version}-bin.tar.gz -C ${opt.folder.path}</run>
+                                    <run>rm -f apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>mv -T ${opt.folder.path}/apache-maven-${maven.version} ${maven.home}</run>
+
+                                    <!-- add executables to path -->
+                                    <run>update-alternatives --install "/usr/bin/mvn" "mvn" "${maven.home}/bin/mvn" 1</run>
+                                    <run>update-alternatives --set "mvn" "${maven.home}/bin/mvn"</run>
+
+                                    <!-- download and extract nexus to opt folder -->
+                                    <run>wget -q http://download.sonatype.com/nexus/oss/nexus-${nexus.version}-bundle.zip</run>
+                                    <run>echo "${nexus.checksum} nexus-${nexus.version}-bundle.zip" | md5sum -c</run>
+                                    <run>unzip -q nexus-${nexus.version}-bundle.zip -d ${opt.folder.path}</run>
+                                    <run>rm -f nexus-${nexus.version}-bundle.zip</run>
+                                    <run>mv -T ${opt.folder.path}/nexus-${nexus.version} ${nexus.home}</run>
+
+                                    <!-- remove unused folders -->
+                                    <run>rm -rf ${nexus.home}/bin</run>
+
+                                </runCmds>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <volumes>
+                                    <bind>
+                                        <volume>/etc/localtime:/etc/localtime:ro</volume>
+                                        <volume>/etc/timezone:/etc/timezone:ro</volume>
+                                        <volume>${data.folder}/sonatype-work:${sonatype.work}</volume>
+                                    </bind>
+                                </volumes>
+                                <ports>
+                                    <port>8081:8081</port>
+                                </ports>
+                                <env>
+                                    <NEXUS_CONTEXT_PATH>/nexus</NEXUS_CONTEXT_PATH>
+                                </env>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

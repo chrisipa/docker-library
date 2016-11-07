@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>debian-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>apache</artifactId>
+
+    <packaging>docker</packaging>
+
+    <properties>
+        <ajp.host>localhost</ajp.host>
+        <apache.version>2.4</apache.version>
+        <apache.run.user>www-data</apache.run.user>
+        <apache.run.group>${apache.run.user}</apache.run.group>
+        <apache.home>/etc/apache2</apache.home>
+        <apache.config.folder>${apache.home}/conf-enabled</apache.config.folder>
+        <apache.log.folder>/var/log/apache2</apache.log.folder>
+        <ssl.folder>${opt.folder.path}/ssl/apache2</ssl.folder>
+        <server.name>localhost</server.name>
+        <server.alias>${server.name}</server.alias>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${tenant}/${project.artifactId}</name>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${apache.version}</tag>
+                                </tags>
+                                <from>${tenant}/debian:8</from>
+                                <!-- set environment variables -->
+                                <env>
+                                    <AJP_HOST>${ajp.host}</AJP_HOST>
+                                    <APACHE_HOME>${apache.home}</APACHE_HOME>
+                                    <APACHE_RUN_USER>${apache.run.user}</APACHE_RUN_USER>
+                                    <APACHE_RUN_GROUP>${apache.run.group}</APACHE_RUN_GROUP>
+                                    <APACHE_LOG_FOLDER>${apache.log.folder}</APACHE_LOG_FOLDER>
+                                    <APACHE_CONFIG_FOLDER>${apache.config.folder}</APACHE_CONFIG_FOLDER>
+                                    <SERVER_NAME>${server.name}</SERVER_NAME>
+                                    <SERVER_ALIAS>${server.alias}</SERVER_ALIAS>
+                                    <SSL_FOLDER>${ssl.folder}</SSL_FOLDER>
+                                    <SSL_CERTIFICATE_FILE>${ssl.folder}/server.crt</SSL_CERTIFICATE_FILE>
+                                    <SSL_KEY_FILE>${ssl.folder}/server.key</SSL_KEY_FILE>
+                                    <SSL_CERTIFICATE_CHAIN_FILE>${ssl.folder}/ca.crt</SSL_CERTIFICATE_CHAIN_FILE>
+                                </env>
+                                <optimise>${optimise}</optimise>
+                                <workdir>${apache.home}</workdir>
+                                <ports>
+                                    <port>80</port>
+                                    <port>443</port>
+                                </ports>
+                                <runCmds>
+                                    <!-- install additional packages -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get -y install apache2</run>
+                                    <run>apt-get clean</run>
+
+                                    <!-- create ssl folder -->
+                                    <run>mkdir -p ${ssl.folder}</run>
+
+                                    <!-- enable configuration -->
+                                    <run>a2enmod deflate headers proxy proxy_ajp rewrite ssl</run>
+                                    <run>rm ${apache.home}/sites-enabled/*</run>
+
+                                    <!-- -->
+                                </runCmds>
+                                <volumes>
+                                    <volume>${apache.log.folder}</volume>
+                                    <volume>${ssl.folder}</volume>
+                                </volumes>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/apache.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <cmd>
+                                    <exec>
+                                        <args>/usr/sbin/apache2ctl</args>
+                                        <args>-D</args>
+                                        <args>FOREGROUND</args>
+                                    </exec>
+                                </cmd>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/entrypoint</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/conf-enabled</directory>
+                                                <outputDirectory>${apache.config.folder}</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/ssl</directory>
+                                                <outputDirectory>${ssl.folder}</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                    <skipRun>true</skipRun>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

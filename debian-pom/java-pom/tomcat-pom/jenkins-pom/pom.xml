@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>tomcat-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jenkins-pom</artifactId>
+
+    <packaging>pom</packaging>
+
+    <properties>
+        <jenkins.version>1.650</jenkins.version>
+        <jenkins.checksum>70016ac250ac680107e69964c0dc688d</jenkins.checksum>
+        <jenkins.home>${opt.folder.path}/jenkins</jenkins.home>
+    </properties>
+
+    <modules>
+        <module>jenkins</module>
+    </modules>
+
+</project>
