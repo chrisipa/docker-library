@@ -24,12 +24,12 @@
                     <verbose>${verbose}</verbose>
                     <images>
                         <image>
-                            <name>${tenant}/${project.artifactId}</name>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
                                 </tags>
-                                <from>${tenant}/ab:latest</from>
+                                <from>${registry}/${tenant}/ab:latest</from>
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- download multi url ab binary -->

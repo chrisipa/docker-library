@@ -37,14 +37,14 @@
                     <verbose>${verbose}</verbose>
                     <images>
                         <image>
-                            <name>${tenant}/${project.artifactId}</name>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
                             <alias>${project.artifactId}</alias>
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
                                     <tag>${nexus.version}</tag>
                                 </tags>
-                                <from>${tenant}/jdk:8u66</from>
+                                <from>${registry}/${tenant}/jdk:8u66</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <SONATYPE_WORK>${sonatype.work}</SONATYPE_WORK>

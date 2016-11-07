@@ -28,13 +28,13 @@
                     <verbose>${verbose}</verbose>
                     <images>
                         <image>
-                            <name>${tenant}/${project.artifactId}</name>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
                                     <tag>${jmeter.version}</tag>
                                 </tags>
-                                <from>${tenant}/jdk:8u66</from>
+                                <from>${registry}/${tenant}/jdk:8u66</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <JMETER_HOME>${jmeter.home}</JMETER_HOME>

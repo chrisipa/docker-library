@@ -31,14 +31,14 @@
                     <verbose>${verbose}</verbose>
                     <images>
                         <image>
-                            <name>${tenant}/${project.artifactId}</name>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
                             <alias>${project.artifactId}</alias>
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
                                     <tag>${jenkins.version}</tag>
                                 </tags>
-                                <from>${tenant}/tomcat:7.0.70</from>
+                                <from>${registry}/${tenant}/tomcat:7.0.70</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <JENKINS_HOME>${jenkins.home}</JENKINS_HOME>

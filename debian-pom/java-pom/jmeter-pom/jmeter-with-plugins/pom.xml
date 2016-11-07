@@ -31,13 +31,13 @@
                     <verbose>${verbose}</verbose>
                     <images>
                         <image>
-                            <name>${tenant}/${project.artifactId}</name>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
                                     <tag>${jmeter.version}</tag>
                                 </tags>
-                                <from>${tenant}/jmeter:${jmeter.version}</from>
+                                <from>${registry}/${tenant}/jmeter:${jmeter.version}</from>
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- download and extract standard plugins -->

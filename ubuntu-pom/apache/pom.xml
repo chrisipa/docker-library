@@ -37,13 +37,13 @@
                     <verbose>${verbose}</verbose>
                     <images>
                         <image>
-                            <name>${tenant}/${project.artifactId}</name>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
                                     <tag>${apache.version}</tag>
                                 </tags>
-                                <from>${tenant}/debian:8</from>
+                                <from>${registry}/${tenant}/debian:8</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <AJP_HOST>${ajp.host}</AJP_HOST>

@@ -24,12 +24,12 @@
                     <verbose>${verbose}</verbose>
                     <images>
                         <image>
-                            <name>${tenant}/${project.artifactId}</name>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
                                 </tags>
-                                <from>${tenant}/debian:8</from>
+                                <from>${registry}/${tenant}/debian:8</from>
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- install additional packages -->

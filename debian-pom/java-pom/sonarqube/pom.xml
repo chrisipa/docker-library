@@ -50,14 +50,14 @@
                             </run>
                         </image>
                         <image>
-                            <name>${tenant}/${project.artifactId}</name>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
                             <alias>${project.artifactId}</alias>
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
                                     <tag>${sonarqube.version}</tag>
                                 </tags>
-                                <from>${tenant}/jdk:8u66</from>
+                                <from>${registry}/${tenant}/jdk:8u66</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <SONARQUBE_HOME>${sonarqube.home}</SONARQUBE_HOME>

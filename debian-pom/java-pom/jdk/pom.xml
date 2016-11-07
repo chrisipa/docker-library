@@ -39,13 +39,13 @@
                     <verbose>${verbose}</verbose>
                     <images>
                         <image>
-                            <name>${tenant}/${project.artifactId}</name>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
                                     <tag>${jdk.version}</tag>
                                 </tags>
-                                <from>${tenant}/debian:8</from>
+                                <from>${registry}/${tenant}/debian:8</from>
                                 <!-- set environment variables for program versions -->
                                 <env>
                                     <JAVA_HOME>${java.home}</JAVA_HOME>
