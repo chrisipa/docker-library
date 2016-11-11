@@ -26,6 +26,8 @@
         <jdk.url>http://download.oracle.com/otn-pub/java/jdk/${jdk.path.element}/${jdk.file.name}</jdk.url>
         <jdk.checksum>88f31f3d642c3287134297b8c10e61bf</jdk.checksum>
 
+        <jre.security.folder>${java.home}/jre/lib/security</jre.security.folder>
+
         <ssl.trusted.certs.folder>${opt.folder.path}/ssl/trusted</ssl.trusted.certs.folder>
     </properties>
 
@@ -49,7 +51,7 @@
                                 <!-- set environment variables for program versions -->
                                 <env>
                                     <JAVA_HOME>${java.home}</JAVA_HOME>
-                                    <JRE_SECURITY_FOLDER>${java.home}/jre/lib/security</JRE_SECURITY_FOLDER>
+                                    <JRE_SECURITY_FOLDER>${jre.security.folder}</JRE_SECURITY_FOLDER>
                                     <SSL_TRUSTED_CERTS_FOLDER>${ssl.trusted.certs.folder}</SSL_TRUSTED_CERTS_FOLDER>
                                 </env>
                                 <optimise>${optimise}</optimise>
