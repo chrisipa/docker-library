@@ -51,11 +51,11 @@ function cleanup() {
     then
         # remove all docker containers
         log "INFO" "Removing all docker containers ..."
-        docker rm -f $(docker ps -a -q)
+        docker rm -f $(docker ps -a -q) || true
 
         # remove all docker images
         log "INFO" "Removing all docker images ..."
-        docker rmi -f $(docker images -q)
+        docker rmi -f $(docker images -q) || true
     fi
 
     # exit successfull
@@ -76,7 +76,7 @@ function removeContainers() {
     for containerName in $(echo $projects | tr "," "\n")
     do
         log "INFO" "Removing container with name '$containerName'"
-        docker rm -f "$containerName" 2>&1 >> /dev/null
+        docker rm -f "$containerName" 2>&1 >> /dev/null || true
     done
 }
 
