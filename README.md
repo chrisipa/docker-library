@@ -1,60 +1,35 @@
-# Docker
+# Docker-Library
 
 ## Prerequisities
 
-* [Please make sure that you have installed docker correctly](INSTALL.md)
+* [Oracle JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Apache Maven 3](https://maven.apache.org/download.cgi)
+* [Docker](INSTALL.md)
 
 ## Build
 
-### Build images
+* Execute build script:
+    ```
+    Usage:
+      ./build.sh [Options] <Args>
 
-* Build images:
-    ```
-    mvn clean docker:build
-    ```
+    Options:
+      -h                    Print this help text
+      -c                    Remove all docker containers and images
+      -d                    Deploy docker images to docker registry
+      -f                    Build docker images without build cache
+      -p <project-list>     Build comma separated maven project list
+      -s                    Create docker containers from images and start them
+      -t <tag>              Build with specified image tag
 
-* Build images with docker cache disabled:
-    ```
-    mvn clean docker:build -D docker.nocache
-    ```
-
-* Build images with image tag "master":
-    ```
-    mvn clean docker:build -D image.tag=master
-    ```
-
-* Build single image "jenkins":
-    ```
-    mvn clean docker:build -pl :jenkins
-    ```
-
-### Test containers
-
-* Start containers:
-    ```
-    mvn docker:start
-    ```
-
-* Start single container "jenkins":
-    ```
-    mvn docker:start -pl :jenkins
-    ```
-
-* Stop containers:
-    ```
-    mvn docker:stop
-    ```
-
-* Stop single container "jenkins":
-    ```
-    mvn docker:stop -pl :jenkins
-    ```
-
-### Cleanup containers and images
-
-* Launch cleanup script (removes all containers and images):
-    ```
-    ./cleanup.sh
+    Examples:
+      ./build.sh                                   Build all docker images
+      ./build.sh -c                                Remove all docker containers and images
+      ./build.sh -p debian,jdk                     Build only docker images for 'debian' and 'jdk'
+      ./build.sh -p debian,jdk -t master -f        -> and tag with name 'master'
+      ./build.sh -p debian,jdk -t master -f        -> and do not use docker build cache
+      ./build.sh -p debian,jdk -t master -f -s     -> and start containers
+      ./build.sh -p debian,jdk -t master -f -s -d  -> and deploy to docker registry
     ```
 
 ## Additional information
