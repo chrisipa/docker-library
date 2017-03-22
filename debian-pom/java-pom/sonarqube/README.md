@@ -1,4 +1,4 @@
-docker-sonarqube
+Sonarqube
 =============
 
 Sonarqube docker image based on Debian Jessie and Oracle JDK 8.
