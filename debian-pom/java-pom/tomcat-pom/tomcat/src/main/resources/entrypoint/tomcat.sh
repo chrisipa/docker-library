@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # include parent entrypoint script
-source /java.sh
+source /jdk.sh
 
 # set tomcat session timeout
 if [ -n $TOMCAT_SESSION_TIMEOUT ]

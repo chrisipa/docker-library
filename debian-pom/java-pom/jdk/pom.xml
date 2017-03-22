@@ -101,7 +101,7 @@
                                 </volumes>
                                 <entryPoint>
                                     <exec>
-                                        <args>/java.sh</args>
+                                        <args>/jdk.sh</args>
                                     </exec>
                                 </entryPoint>
                                 <cmd>bash</cmd>

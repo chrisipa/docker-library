@@ -67,7 +67,7 @@
                                     <run>apt-get clean</run>
 
                                     <!-- download and extract jenkins to webapps folder -->
-                                    <run>wget -q http://ftp.halifax.rwth-aachen.de/jenkins/war/${jenkins.version}/jenkins.war</run>
+                                    <run>wget -q http://mirrors.jenkins.io/war-stable/${jenkins.version}/jenkins.war</run>
                                     <run>echo "${jenkins.checksum} jenkins.war" | md5sum -c</run>
                                     <run>unzip -q jenkins.war -d ${tomcat.webapps.folder}/jenkins</run>
                                     <run>rm -f jenkins.war</run>

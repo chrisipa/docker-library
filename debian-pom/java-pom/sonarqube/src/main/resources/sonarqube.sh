@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # include parent entrypoint script
-source /java.sh
+source /jdk.sh
 
 # set defaults for database
 if [ -z $DB_TYPE ] ; then export DB_TYPE="mysql" ; fi

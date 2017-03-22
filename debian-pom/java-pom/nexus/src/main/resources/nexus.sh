@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # include parent entrypoint script
-source /java.sh
+source /jdk.sh
 
 # start nexus application
 exec java \

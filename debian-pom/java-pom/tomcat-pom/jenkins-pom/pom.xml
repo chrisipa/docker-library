@@ -12,8 +12,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <jenkins.version>1.650</jenkins.version>
-        <jenkins.checksum>70016ac250ac680107e69964c0dc688d</jenkins.checksum>
+        <jenkins.version>1.651.3</jenkins.version>
+        <jenkins.checksum>6f7dad64bcbd443b026717f5c5600d1c</jenkins.checksum>
         <jenkins.home>${opt.folder.path}/jenkins</jenkins.home>
     </properties>
 
