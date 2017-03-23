@@ -1,4 +1,14 @@
-# Docker-Library
+# Docker Library
+
+Docker library project for building useful docker images with the maven docker plugin.
+
+Here are some examples:
+
+* Apache Tomcat
+* Jenkins
+* Oracle JDK
+* Sonarqube
+* Sonatype Nexus
 
 ## Prerequisities
 
