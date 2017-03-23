@@ -46,8 +46,8 @@ docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v /opt/docker/jenkins:
 
 ### Use your own SSL certificates
 
-See parent image: [chrisipa/tomcat](https://github.com/chrisipa/docker-tomcat#use-your-own-ssl-certificates)
+See parent image: [chrisipa/tomcat](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/tomcat-pom/tomcat#use-your-own-ssl-certificates)
 
 ### Accept self signed SSL certificates from Jenkins JRE
 
-See parent image: [chrisipa/java](https://github.com/chrisipa/docker-java#accept-self-signed-ssl-certificates-from-jre)
+See parent image: [chrisipa/jdk](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/jdk#accept-self-signed-ssl-certificates-from-jre)

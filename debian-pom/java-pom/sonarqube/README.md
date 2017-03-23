@@ -129,4 +129,4 @@ When you start the Sonarqube container, you can adjust the configuration by pass
 
 ### Accept self signed SSL certificates from Sonarqube JRE
 
-See parent image: [chrisipa/java](https://github.com/chrisipa/docker-java#accept-self-signed-ssl-certificates-from-jre)
+See parent image: [chrisipa/jdk](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/jdk#accept-self-signed-ssl-certificates-from-jre)
