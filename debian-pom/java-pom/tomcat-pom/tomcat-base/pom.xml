@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>tomcat-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>tomcat-base</artifactId>
+
+    <packaging>docker</packaging>
+
+    <properties>
+        <tomcat.folder.name>apache-tomcat-${tomcat.version}</tomcat.folder.name>
+        <tomcat.folder.path>${opt.folder.path}/${tomcat.folder.name}</tomcat.folder.path>
+        <tomcat.session.timeout>30</tomcat.session.timeout>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${tomcat.version}</tag>
+                                </tags>
+                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
+                                <!-- set environment variables for program versions -->
+                                <env>
+                                    <CATALINA_HOME>${catalina.home}</CATALINA_HOME>
+                                    <PATH>$PATH:${catalina.home}/bin</PATH>
+                                    <TOMCAT_KEYSTORE_FOLDER>${tomcat.keystore.folder}</TOMCAT_KEYSTORE_FOLDER>
+                                    <TOMCAT_WEBAPPS_FOLDER>${tomcat.webapps.folder}</TOMCAT_WEBAPPS_FOLDER>
+                                    <TOMCAT_LOG_FOLDER>${tomcat.log.folder}</TOMCAT_LOG_FOLDER>
+                                    <TOMCAT_SESSION_TIMEOUT>${tomcat.session.timeout}</TOMCAT_SESSION_TIMEOUT>
+                                </env>
+                                <optimise>${optimise}</optimise>
+                                <volumes>
+                                    <volume>${tomcat.keystore.folder}</volume>
+                                    <volume>${tomcat.log.folder}</volume>
+                                </volumes>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/${project.artifactId}.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <cmd>
+                                    <exec>
+                                        <args>catalina.sh</args>
+                                        <args>run</args>
+                                    </exec>
+                                </cmd>
+                                <workdir>${catalina.home}</workdir>
+                                <ports>
+                                    <port>8080</port>
+                                    <port>8443</port>
+                                </ports>
+                                <runCmds>
+                                    <!-- copy tomcat files to catalina home -->
+                                    <run>cp -r -n ${tomcat.folder.path}/* ${catalina.home}</run>
+                                    <run>rm -rf ${tomcat.folder.path}</run>
+
+                                    <!-- remove default webapps -->
+                                    <run>rm -rf ${tomcat.webapps.folder}/ROOT</run>
+                                    <run>rm -rf ${tomcat.webapps.folder}/docs</run>
+                                    <run>rm -rf ${tomcat.webapps.folder}/examples</run>
+                                    <run>rm -rf ${tomcat.webapps.folder}/host-manager</run>
+                                    <run>rm -rf ${tomcat.webapps.folder}/manager</run>
+
+                                    <!-- rename new ROOT webapp -->
+                                    <run>mv ${tomcat.webapps.folder}/NEWROOT ${tomcat.webapps.folder}/ROOT</run>
+
+                                    <!-- remove tomcat bat files and make tomcat sh files executable -->
+                                    <run>rm -f ${catalina.home}/bin/*.bat</run>
+                                    <run>chmod +x ${catalina.home}/bin/*.sh</run>
+                                </runCmds>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <includes>
+                                                    <include>org.apache.tomcat:tomcat:zip</include>
+                                                </includes>
+                                                <outputDirectory>${opt.folder.path}</outputDirectory>
+                                                <unpack>true</unpack>
+                                            </dependencySet>
+                                        </dependencySets>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/conf</directory>
+                                                <outputDirectory>${catalina.home}/conf</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/entrypoint</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/keystore</directory>
+                                                <outputDirectory>${tomcat.keystore.folder}</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/ROOT</directory>
+                                                <outputDirectory>${tomcat.webapps.folder}/NEWROOT</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                    <skipRun>true</skipRun>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat</artifactId>
+            <version>${tomcat.version}</version>
+            <type>zip</type>
+        </dependency>
+    </dependencies>
+
+</project>

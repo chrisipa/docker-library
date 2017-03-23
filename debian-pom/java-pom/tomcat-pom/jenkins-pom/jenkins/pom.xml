@@ -38,7 +38,7 @@
                                     <tag>${image.tag}</tag>
                                     <tag>${jenkins.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/tomcat:7.0.70</from>
+                                <from>${registry}/${tenant}/tomcat-base:${tomcat.version}</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <JENKINS_HOME>${jenkins.home}</JENKINS_HOME>
@@ -47,7 +47,7 @@
                                 <optimise>${optimise}</optimise>
                                 <entryPoint>
                                     <exec>
-                                        <args>/jenkins.sh</args>
+                                        <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
                                 <cmd>

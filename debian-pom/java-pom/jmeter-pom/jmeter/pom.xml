@@ -34,7 +34,7 @@
                                     <tag>${image.tag}</tag>
                                     <tag>${jmeter.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jdk:8u66</from>
+                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <JMETER_HOME>${jmeter.home}</JMETER_HOME>
@@ -43,7 +43,7 @@
                                 <optimise>${optimise}</optimise>
                                 <entryPoint>
                                     <exec>
-                                        <args>/jmeter.sh</args>
+                                        <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
                                 <runCmds>

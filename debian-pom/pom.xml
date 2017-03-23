@@ -12,13 +12,13 @@
     <packaging>pom</packaging>
 
     <properties>
-
         <opt.folder.path>/opt</opt.folder.path>
         <data.folder>${opt.folder.path}/docker</data.folder>
-
+        <debian.version>8</debian.version>
     </properties>
 
     <modules>
+        <module>debian-base</module>
         <module>debian</module>
         <module>ab-pom</module>
         <module>apache</module>

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # include parent entrypoint script
-source /debian.sh
+source /debian-base.sh
 
 # execute command
 exec "$@"

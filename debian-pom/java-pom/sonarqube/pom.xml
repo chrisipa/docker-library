@@ -57,7 +57,7 @@
                                     <tag>${image.tag}</tag>
                                     <tag>${sonarqube.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jdk:8u66</from>
+                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <SONARQUBE_HOME>${sonarqube.home}</SONARQUBE_HOME>
@@ -72,7 +72,7 @@
                                 </volumes>
                                 <entryPoint>
                                     <exec>
-                                        <args>/sonarqube.sh</args>
+                                        <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
                                 <workdir>${sonarqube.home}</workdir>

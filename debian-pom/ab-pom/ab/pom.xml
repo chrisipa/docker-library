@@ -29,7 +29,7 @@
                                 <tags>
                                     <tag>${image.tag}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/debian:8</from>
+                                <from>${registry}/${tenant}/debian-base:${debian.version}</from>
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- install additional packages -->
@@ -39,9 +39,23 @@
                                 </runCmds>
                                 <entryPoint>
                                     <exec>
-                                        <args>ab</args>
+                                        <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
                             </build>
                         </image>
                     </images>

@@ -13,12 +13,14 @@
 
     <properties>
         <catalina.home>${opt.folder.path}/tomcat</catalina.home>
+        <tomcat.version>7.0.70</tomcat.version>
         <tomcat.keystore.folder>${opt.folder.path}/ssl/tomcat</tomcat.keystore.folder>
         <tomcat.webapps.folder>${catalina.home}/webapps</tomcat.webapps.folder>
         <tomcat.log.folder>${catalina.home}/logs</tomcat.log.folder>
     </properties>
 
     <modules>
+        <module>tomcat-base</module>
         <module>tomcat</module>
         <module>jenkins-pom</module>
     </modules>

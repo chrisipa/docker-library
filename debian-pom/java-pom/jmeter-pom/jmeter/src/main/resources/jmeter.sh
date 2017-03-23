@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # include parent entrypoint script
-source /jdk.sh
+source /jdk-base.sh
 
 # execute command
 exec jmeter.sh "$@"

@@ -43,7 +43,7 @@
                                     <tag>${image.tag}</tag>
                                     <tag>${apache.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/debian:8</from>
+                                <from>${registry}/${tenant}/debian-base:${debian.version}</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <AJP_HOST>${ajp.host}</AJP_HOST>
@@ -86,7 +86,7 @@
                                 </volumes>
                                 <entryPoint>
                                     <exec>
-                                        <args>/apache.sh</args>
+                                        <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
                                 <cmd>

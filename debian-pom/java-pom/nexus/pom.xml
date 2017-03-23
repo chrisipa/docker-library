@@ -44,7 +44,7 @@
                                     <tag>${image.tag}</tag>
                                     <tag>${nexus.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jdk:8u66</from>
+                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <SONATYPE_WORK>${sonatype.work}</SONATYPE_WORK>
@@ -59,7 +59,7 @@
                                 </volumes>
                                 <entryPoint>
                                     <exec>
-                                        <args>/nexus.sh</args>
+                                        <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
                                 <workdir>${nexus.home}</workdir>

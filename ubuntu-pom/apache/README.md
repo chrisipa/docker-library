@@ -1,6 +1,7 @@
-# Apache 2.4
+Apache 2.4
+==========
 
-## Generate default SSL certificates
+# Generate default SSL certificates
 
 * Create CA Certificate:
     ```
@@ -32,7 +33,7 @@
         -out server.crt
     ```
 
-## References
+# References
 
 * https://wiki.debian.org/Self-Signed_Certificate
 * https://www.openssl.org/docs/manmaster/apps/req.html

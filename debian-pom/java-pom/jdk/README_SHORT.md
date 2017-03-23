@@ -1,0 +1,1 @@
+JDK docker image based on Debian Jessie and Oracle JDK 8.

@@ -11,7 +11,12 @@
 
     <packaging>pom</packaging>
 
+    <properties>
+        <jdk.version>8u66</jdk.version>
+    </properties>
+
     <modules>
+        <module>jdk-base</module>
         <module>jdk</module>
         <module>jmeter-pom</module>
         <module>nexus</module>

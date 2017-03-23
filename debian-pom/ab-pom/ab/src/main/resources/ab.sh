@@ -4,4 +4,4 @@
 source /debian-base.sh
 
 # execute command
-exec "$@"
+/usr/bin/ab $@
