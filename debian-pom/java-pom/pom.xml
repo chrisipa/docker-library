@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <jdk.version>8u66</jdk.version>
+        <jdk.version>8u162</jdk.version>
     </properties>
 
     <modules>
