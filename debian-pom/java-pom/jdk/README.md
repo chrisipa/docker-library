@@ -17,7 +17,7 @@ This Tomcat docker image contains the following software components:
 
 1. Run the Java container with the following command:
   ```
-  docker run chrisipa/jdk -version
+  docker run --rm chrisipa/jdk -version
   ```
 
 ## Advanced topics
