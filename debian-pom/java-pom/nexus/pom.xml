@@ -21,10 +21,11 @@
         <maven.checksum>516923b3955b6035ba6b0a5b031fbd8b</maven.checksum>
         <maven.home>${opt.folder.path}/mvn</maven.home>
         <nexus.home>${opt.folder.path}/nexus</nexus.home>
-        <nexus.version>2.12.0-01</nexus.version>
-        <nexus.checksum>6a2e026a6ad299fbfc0bd62ed05a0a85</nexus.checksum>
+        <nexus.data>${opt.folder.path}/nexus-data</nexus.data>
+        <nexus.version>3.8.0-02</nexus.version>
+        <nexus.checksum>9543aeb545d621a6fe27b26af3490dfa</nexus.checksum>
         <nexus.context.path>/</nexus.context.path>
-        <nexus.java.opts>$NEXUS_ADDITIONAL_JAVA_OPTS -server -Xmx768m -Xms256m -XX:MaxPermSize=192m -Djava.net.preferIPv4Stack=true</nexus.java.opts>
+        <install4j.add.vm.params>-Xms1200m -Xmx1200m -XX:MaxDirectMemorySize=2g -Djava.util.prefs.userRoot=${nexus.data}/javaprefs</install4j.add.vm.params>
     </properties>
 
     <build>
@@ -50,13 +51,20 @@
                                     <SONATYPE_WORK>${sonatype.work}</SONATYPE_WORK>
                                     <MAVEN_HOME>${maven.home}</MAVEN_HOME>
                                     <NEXUS_HOME>${nexus.home}</NEXUS_HOME>
+                                    <NEXUS_DATA>${nexus.data}</NEXUS_DATA>
                                     <NEXUS_CONTEXT_PATH>${nexus.context.path}</NEXUS_CONTEXT_PATH>
-                                    <NEXUS_JAVA_OPTS>${nexus.java.opts}</NEXUS_JAVA_OPTS>
+                                    <INSTALL4J_ADD_VM_PARAMS>${install4j.add.vm.params}</INSTALL4J_ADD_VM_PARAMS>
                                 </env>
-                                <optimise>${optimise}</optimise>
+                                <optimise>false</optimise>
                                 <volumes>
                                     <volume>${sonatype.work}</volume>
                                 </volumes>
+                                <cmd>
+								    <exec>
+								        <args>bin/nexus</args>
+								        <args>run</args>
+								    </exec>
+								</cmd>
                                 <entryPoint>
                                     <exec>
                                         <args>/${project.artifactId}.sh</args>
@@ -65,6 +73,7 @@
                                 <workdir>${nexus.home}</workdir>
                                 <ports>
                                     <port>8081</port>
+                                    <port>8082</port>
                                 </ports>
                                 <runCmds>
                                     <!-- install additional packages -->
@@ -83,16 +92,12 @@
                                     <run>update-alternatives --install "/usr/bin/mvn" "mvn" "${maven.home}/bin/mvn" 1</run>
                                     <run>update-alternatives --set "mvn" "${maven.home}/bin/mvn"</run>
 
-                                    <!-- download and extract nexus to opt folder -->
-                                    <run>wget -q http://download.sonatype.com/nexus/oss/nexus-${nexus.version}-bundle.zip</run>
-                                    <run>echo "${nexus.checksum} nexus-${nexus.version}-bundle.zip" | md5sum -c</run>
-                                    <run>unzip -q nexus-${nexus.version}-bundle.zip -d ${opt.folder.path}</run>
-                                    <run>rm -f nexus-${nexus.version}-bundle.zip</run>
+                                    <!-- download and extract nexus to opt folder -->                                  
+                                    <run>wget -q https://download.sonatype.com/nexus/3/nexus-${nexus.version}-unix.tar.gz</run>
+                                    <run>echo "${nexus.checksum} nexus-${nexus.version}-unix.tar.gz" | md5sum -c</run>
+                                    <run>tar -zxf nexus-${nexus.version}-unix.tar.gz -C ${opt.folder.path}</run>
+                                    <run>rm -f nexus-${nexus.version}-unix.tar.gz</run>
                                     <run>mv -T ${opt.folder.path}/nexus-${nexus.version} ${nexus.home}</run>
-
-                                    <!-- remove unused folders -->
-                                    <run>rm -rf ${nexus.home}/bin</run>
-
                                 </runCmds>
                                 <assembly>
                                     <basedir>/</basedir>
@@ -120,6 +125,7 @@
                                 </volumes>
                                 <ports>
                                     <port>8081:8081</port>
+                                    <port>8082:8082</port>
                                 </ports>
                                 <env>
                                     <NEXUS_CONTEXT_PATH>/nexus</NEXUS_CONTEXT_PATH>

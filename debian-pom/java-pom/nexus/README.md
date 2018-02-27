@@ -1,5 +1,5 @@
 Nexus
-==============
+=====
 
 Nexus docker image based on Debian Jessie and Oracle JDK 8.
 
@@ -11,9 +11,10 @@ This Nexus docker image contains the following software components:
 
 
 ## Ports
-This Nexus port is exposed:
+These Nexus ports are exposed:
 
   - 8081 (GUI)
+  - 8082 (Docker Registry)
 
 
 # How to run the container
@@ -22,10 +23,10 @@ This Nexus port is exposed:
 
 When you start the Nexus container, you can adjust the configuration by passing one or more environment variables on the `docker run` command line:
 
-### `NEXUS_ADDITIONAL_JAVA_OPTS`
+### `INSTALL4J_ADD_VM_PARAMS`
 
  - The additional options for the java process
- - Default value: 
+ - Default value: `-Xms1200m -Xmx1200m -XX:MaxDirectMemorySize=2g -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs`
 
 ### `NEXUS_CONTEXT_PATH`
 
