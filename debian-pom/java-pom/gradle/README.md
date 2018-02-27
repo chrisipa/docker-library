@@ -23,19 +23,6 @@ This Gradle docker image contains the following software components:
 
 ## Advanced topics
 
-### Accept self signed SSL certificates from JRE
+### Accept self signed SSL certificates from Gradle JRE
 
-1. Create sub folder for trusted SSL certificates:
-  ```
-  sudo mkdir -p /opt/ssl/trusted
-  ```
-
-2. Use [OpenSSL](https://www.openssl.org/) to download the self signed certificate to trusted SSL certificates folder:
-  ```
-  echo "GET /" | openssl s_client -connect my.host.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /opt/ssl/trusted/my-self-signed.crt
-  ```
-
-3. Run Java container with the commands above and mount folder for trusted SSL certificates:
-  ```
-  -v /opt/ssl/trusted:/opt/ssl/trusted
-  ```
+See parent image: [chrisipa/jdk](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/jdk#accept-self-signed-ssl-certificates-from-jre)
