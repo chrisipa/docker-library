@@ -7,6 +7,7 @@ Nexus docker image based on Debian Jessie and Oracle JDK 8.
 This Nexus docker image contains the following software components:
 
  - [Oracle JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+ - [Apache Maven 3](https://maven.apache.org/download.cgi)
  - [Nexus Repository Manager OSS](http://www.sonatype.org/nexus/go/)
 
 
