@@ -12,7 +12,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <jdk.version>8u162</jdk.version>
+        <jdk.major.version>8</jdk.major.version>
+        <jdk.version>${jdk.major.version}u162</jdk.version>
         <maven.major.version>3</maven.major.version>
         <maven.version>${maven.major.version}.5.2</maven.version>
         <maven.checksum>948110de4aab290033c23bf4894f7d9a</maven.checksum>

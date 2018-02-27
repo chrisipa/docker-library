@@ -13,7 +13,8 @@
 
     <properties>
         <catalina.home>${opt.folder.path}/tomcat</catalina.home>
-        <tomcat.version>9.0.5</tomcat.version>
+        <tomcat.major.version>9</tomcat.major.version>
+        <tomcat.version>${tomcat.major.version}.0.5</tomcat.version>
         <tomcat.keystore.folder>${opt.folder.path}/ssl/tomcat</tomcat.keystore.folder>
         <tomcat.webapps.folder>${catalina.home}/webapps</tomcat.webapps.folder>
         <tomcat.log.folder>${catalina.home}/logs</tomcat.log.folder>

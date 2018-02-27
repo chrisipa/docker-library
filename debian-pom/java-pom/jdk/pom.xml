@@ -29,6 +29,7 @@
                                 <tags>
                                     <tag>${image.tag}</tag>
                                     <tag>${jdk.version}</tag>
+                                    <tag>${jdk.major.version}</tag>
                                 </tags>
                                 <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
                                 <optimise>${optimise}</optimise>

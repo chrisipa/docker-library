@@ -29,6 +29,7 @@
                                 <tags>
                                     <tag>${image.tag}</tag>
                                     <tag>${tomcat.version}</tag>
+                                    <tag>${tomcat.major.version}</tag>
                                 </tags>
                                 <from>${registry}/${tenant}/tomcat-base:${tomcat.version}</from>
                                 <optimise>${optimise}</optimise>

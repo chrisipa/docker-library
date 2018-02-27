@@ -35,6 +35,7 @@
                                 <tags>
                                     <tag>${image.tag}</tag>
                                     <tag>${tomcat.version}</tag>
+                                    <tag>${tomcat.major.version}</tag>
                                 </tags>
                                 <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
                                 <!-- set environment variables for program versions -->
