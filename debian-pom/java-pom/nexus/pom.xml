@@ -16,10 +16,6 @@
 
     <properties>
         <sonatype.work>${opt.folder.path}/sonatype-work</sonatype.work>
-        <maven.major.version>3</maven.major.version>
-        <maven.version>${maven.major.version}.3.9</maven.version>
-        <maven.checksum>516923b3955b6035ba6b0a5b031fbd8b</maven.checksum>
-        <maven.home>${opt.folder.path}/mvn</maven.home>
         <nexus.home>${opt.folder.path}/nexus</nexus.home>
         <nexus.data>${opt.folder.path}/nexus-data</nexus.data>
         <nexus.version>3.8.0-02</nexus.version>

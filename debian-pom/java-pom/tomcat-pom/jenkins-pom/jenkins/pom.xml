@@ -14,13 +14,6 @@
 
     <packaging>docker</packaging>
 
-    <properties>
-        <maven.major.version>3</maven.major.version>
-        <maven.version>${maven.major.version}.3.9</maven.version>
-        <maven.checksum>516923b3955b6035ba6b0a5b031fbd8b</maven.checksum>
-        <maven.home>${opt.folder.path}/mvn</maven.home>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
