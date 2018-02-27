@@ -43,7 +43,7 @@
                                 <env>
                                     <GRADLE_HOME>${gradle.home}</GRADLE_HOME>
                                 </env>
-                                <optimise>false</optimise>
+                                <optimise>${optimise}</optimise>
                                 <entryPoint>
                                     <exec>
                                         <args>/${project.artifactId}.sh</args>
