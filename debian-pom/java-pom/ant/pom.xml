@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>java-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ant</artifactId>
+
+    <packaging>docker</packaging>
+    
+    <properties>
+    	<ant.major.version>1</ant.major.version>
+    	<ant.version>${ant.major.version}.10.2</ant.version>
+    	<ant.checksum>51b89be8b73812230d2ee12ea58442fd</ant.checksum>
+    	<ant.home>${opt.folder.path}/ant</ant.home>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${ant.version}</tag>
+                                    <tag>${ant.major.version}</tag>
+                                </tags>
+                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
+                                <!-- set environment variables -->
+                                <env>
+                                    <ANT_HOME>${ant.home}</ANT_HOME>
+                                </env>
+                                <optimise>false</optimise>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/${project.artifactId}.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <runCmds>
+                                    <!-- download and extract ant to opt folder -->
+                                    <run>wget -q http://archive.apache.org/dist/ant/binaries/apache-ant-${ant.version}-bin.tar.gz</run>
+                                    <run>echo "${ant.checksum} apache-ant-${ant.version}-bin.tar.gz" | md5sum -c</run>
+                                    <run>tar -zxf apache-ant-${ant.version}-bin.tar.gz -C ${opt.folder.path}</run>
+                                    <run>rm -f apache-ant-${ant.version}-bin.tar.gz</run>
+                                    <run>mv -T ${opt.folder.path}/apache-ant-${ant.version} ${ant.home}</run>
+
+                                    <!-- add executables to path -->
+                                    <run>update-alternatives --install "/usr/bin/ant" "ant" "${ant.home}/bin/ant" 1</run>
+                                    <run>update-alternatives --set "ant" "${ant.home}/bin/ant"</run>
+                                </runCmds>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                    <skipRun>true</skipRun>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
