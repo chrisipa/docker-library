@@ -51,7 +51,7 @@
                                     <NEXUS_CONTEXT_PATH>${nexus.context.path}</NEXUS_CONTEXT_PATH>
                                     <INSTALL4J_ADD_VM_PARAMS>${install4j.add.vm.params}</INSTALL4J_ADD_VM_PARAMS>
                                 </env>
-                                <optimise>false</optimise>
+                                <optimise>${optimise}</optimise>
                                 <volumes>
                                     <volume>${sonatype.work}</volume>
                                 </volumes>
