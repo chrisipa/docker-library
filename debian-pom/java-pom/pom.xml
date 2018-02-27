@@ -23,6 +23,7 @@
     <modules>
         <module>jdk-base</module>
         <module>ant</module>
+        <module>gradle</module>
         <module>jdk</module>
         <module>jmeter-pom</module>
         <module>mvn</module>
