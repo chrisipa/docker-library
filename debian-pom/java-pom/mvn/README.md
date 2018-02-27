@@ -16,7 +16,7 @@ This Maven docker image contains the following software components:
 
 ### Example 1: Run version check in Maven container 
 
-1. Run the Java container with the following command:
+1. Run the Maven container with the following command:
   ```
   docker run --rm chrisipa/mvn -version
   ```
