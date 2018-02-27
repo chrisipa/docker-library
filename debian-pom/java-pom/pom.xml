@@ -24,6 +24,7 @@
         <module>jdk-base</module>
         <module>jdk</module>
         <module>jmeter-pom</module>
+        <module>mvn</module>
         <module>nexus</module>
         <module>sonarqube</module>
         <module>tomcat-pom</module>

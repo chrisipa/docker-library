@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>java-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>mvn</artifactId>
+
+    <packaging>docker</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${maven.version}</tag>
+                                    <tag>${maven.major.version}</tag>
+                                </tags>
+                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
+                                <!-- set environment variables -->
+                                <env>
+                                    <M2_HOME>${maven.home}</M2_HOME>
+                                </env>
+                                <optimise>${optimise}</optimise>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/${project.artifactId}.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <runCmds>
+                                    <!-- download and extract maven to opt folder -->
+                                    <run>wget -q http://archive.apache.org/dist/maven/maven-${maven.major.version}/${maven.version}/binaries/apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
+                                    <run>tar -zxf apache-maven-${maven.version}-bin.tar.gz -C ${opt.folder.path}</run>
+                                    <run>rm -f apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>mv -T ${opt.folder.path}/apache-maven-${maven.version} ${maven.home}</run>
+
+                                    <!-- add executables to path -->
+                                    <run>update-alternatives --install "/usr/bin/mvn" "mvn" "${maven.home}/bin/mvn" 1</run>
+                                    <run>update-alternatives --set "mvn" "${maven.home}/bin/mvn"</run>
+                                </runCmds>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                    <skipRun>true</skipRun>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
