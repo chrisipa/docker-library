@@ -17,6 +17,7 @@
     </properties>
 
     <modules>
+    	<module>jmeter-base</module>
         <module>jmeter</module>
         <module>jmeter-with-plugins</module>
     </modules>

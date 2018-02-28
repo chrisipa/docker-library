@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>ab-base</module>
         <module>ab</module>
         <module>ab-multi-url</module>
     </modules>

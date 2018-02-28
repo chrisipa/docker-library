@@ -43,19 +43,23 @@
                                     <run>apt-get dist-upgrade -y</run>
                                     <run>apt-get install --no-install-recommends -y ca-certificates curl nano netcat telnet unzip vim wget</run>
                                     <run>apt-get clean</run>
-
+                                    
+                                	<!-- create account for technical user -->
+                                	<run>groupadd -g ${gid} ${group}</run>
+                                	<run>useradd -u ${uid} -g ${gid} -m -s /bin/bash ${user}</run>       
+                                	
                                     <!-- add color options to .bashrc file -->
-                                    <run>echo 'export LS_OPTIONS="--color=auto"' >> $HOME/.bashrc</run>
-                                    <run>echo 'eval "`dircolors`"' >> $HOME/.bashrc</run>
+                                    <run>echo 'export LS_OPTIONS="--color=auto"' >> ${bash.rc.file}</run>
+                                    <run>echo 'eval "`dircolors`"' >> ${bash.rc.file}</run>
 
                                     <!-- add aliases to .bashrc file -->
-                                    <run>echo 'alias ls="ls $LS_OPTIONS"' >> $HOME/.bashrc</run>
-                                    <run>echo 'alias l="ls -altrh"' >> $HOME/.bashrc</run>
-                                    <run>echo 'alias ..="cd .."' >> $HOME/.bashrc</run>
+                                    <run>echo 'alias ls="ls $LS_OPTIONS"' >> ${bash.rc.file}</run>
+                                    <run>echo 'alias l="ls -altrh"' >> ${bash.rc.file}</run>
+                                    <run>echo 'alias ..="cd .."' >> ${bash.rc.file}</run>
 
                                     <!-- enable history search in inputrc file -->
-                                    <run>echo '"\e[5~": history-search-backward' >> /etc/inputrc</run>
-                                    <run>echo '"\e[6~": history-search-forward' >> /etc/inputrc</run>
+                                    <run>echo '"\e[5~": history-search-backward' >> ${input.rc.file}</run>
+                                    <run>echo '"\e[6~": history-search-forward' >> ${input.rc.file}</run>
 
                                 </runCmds>
                                 <entryPoint>

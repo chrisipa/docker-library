@@ -60,7 +60,11 @@
                                     <!-- add executables to path -->
                                     <run>update-alternatives --install "/usr/bin/gradle" "gradle" "${gradle.home}/bin/gradle" 1</run>
                                     <run>update-alternatives --set "gradle" "${gradle.home}/bin/gradle"</run>
+                                    
+                                    <!-- change permissions -->
+                                    <run>chown -R ${user}.${group} ${gradle.home}</run>
                                 </runCmds>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

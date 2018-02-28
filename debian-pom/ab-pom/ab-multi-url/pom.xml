@@ -29,7 +29,7 @@
                                 <tags>
                                     <tag>${image.tag}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/ab:latest</from>
+                                <from>${registry}/${tenant}/ab-base:latest</from>
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- download multi url ab binary -->
@@ -38,9 +38,24 @@
                                 </runCmds>
                                 <entryPoint>
                                     <exec>
-                                        <args>ab</args>
+                                        <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
+                                <user>${user}</user>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
                             </build>
                         </image>
                     </images>

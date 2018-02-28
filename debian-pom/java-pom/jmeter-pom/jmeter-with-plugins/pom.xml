@@ -37,7 +37,7 @@
                                     <tag>${image.tag}</tag>
                                     <tag>${jmeter.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jmeter:${jmeter.version}</from>
+                                <from>${registry}/${tenant}/jmeter-base:${jmeter.version}</from>
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- download and extract standard plugins -->
@@ -51,7 +51,30 @@
                                     <run>echo "${jmeter.extras.plugin.checksum} JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip" | md5sum -c</run>
                                     <run>unzip -q -o JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip -d ${jmeter.home}</run>
                                     <run>rm -f JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip</run>
+                                    
+                                    <!-- change permissions -->
+                                    <run>chown -R ${user}.${group} ${jmeter.home}</run>
                                 </runCmds>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/${project.artifactId}.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <user>${user}</user>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
                             </build>
                         </image>
                     </images>

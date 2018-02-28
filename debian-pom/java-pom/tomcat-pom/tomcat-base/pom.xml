@@ -86,6 +86,10 @@
                                     <!-- remove tomcat bat files and make tomcat sh files executable -->
                                     <run>rm -f ${catalina.home}/bin/*.bat</run>
                                     <run>chmod +x ${catalina.home}/bin/*.sh</run>
+                                    
+                                    <!-- change permissions -->
+                                    <run>chown -R ${user}.${group} ${catalina.home}</run>                                    
+                                    <run>chown -R ${user}.${group} ${tomcat.keystore.folder}</run>                                    
                                 </runCmds>
                                 <assembly>
                                     <basedir>/</basedir>

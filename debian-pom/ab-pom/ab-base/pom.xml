@@ -6,11 +6,11 @@
 
     <parent>
         <groupId>de.papke.docker</groupId>
-        <artifactId>java-pom</artifactId>
+        <artifactId>ab-pom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mvn</artifactId>
+    <artifactId>ab-base</artifactId>
 
     <packaging>docker</packaging>
 
@@ -28,36 +28,20 @@
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
-                                    <tag>${maven.version}</tag>
-                                    <tag>${maven.major.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
-                                <!-- set environment variables -->
-                                <env>
-                                    <M2_HOME>${maven.home}</M2_HOME>
-                                </env>
+                                <from>${registry}/${tenant}/debian-base:${debian.version}</from>
                                 <optimise>${optimise}</optimise>
+                                <runCmds>
+                                    <!-- install additional packages -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get install -y apache2-utils</run>
+                                    <run>apt-get clean</run>
+                                </runCmds>
                                 <entryPoint>
                                     <exec>
                                         <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
-                                <runCmds>
-                                    <!-- download and extract maven to opt folder -->
-                                    <run>wget -q http://archive.apache.org/dist/maven/maven-${maven.major.version}/${maven.version}/binaries/apache-maven-${maven.version}-bin.tar.gz</run>
-                                    <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
-                                    <run>tar -zxf apache-maven-${maven.version}-bin.tar.gz -C ${opt.folder.path}</run>
-                                    <run>rm -f apache-maven-${maven.version}-bin.tar.gz</run>
-                                    <run>mv -T ${opt.folder.path}/apache-maven-${maven.version} ${maven.home}</run>
-
-                                    <!-- add executables to path -->
-                                    <run>update-alternatives --install "/usr/bin/mvn" "mvn" "${maven.home}/bin/mvn" 1</run>
-                                    <run>update-alternatives --set "mvn" "${maven.home}/bin/mvn"</run>
-                                    
-                                    <!-- change permissions -->
-                                    <run>chown -R ${user}.${group} ${maven.home}</run>
-                                </runCmds>
-                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

@@ -33,14 +33,45 @@
                                 </tags>
                                 <from>${registry}/${tenant}/jenkins:${jenkins.version}</from>
                                 <optimise>${optimise}</optimise>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/${project.artifactId}.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <cmd>
+                                    <exec>
+                                        <args>catalina.sh</args>
+                                        <args>run</args>
+                                    </exec>
+                                </cmd>
                                 <runCmds>
                                     <!-- download zip file with java cryptography extension and unzip to jre security folder -->
                                     <run>wget -q --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip</run>
                                     <run>unzip -q jce_policy-8.zip</run>
-                                    <run>cp UnlimitedJCEPolicyJDK8/*.jar $JAVA_HOME/jre/lib/security</run>
+                                    <run>cp UnlimitedJCEPolicyJDK8/*.jar ${jre.security.folder}</run>
+                                    <run>rm -rf ${jre.security.folder}/policy</run>
                                     <run>rm -f jce_policy-8.zip</run>
                                     <run>rm -rf UnlimitedJCEPolicyJDK8</run>
+                                    
+                                    <!-- change permissions -->
+                                    <run>chown -R ${user}.${group} ${java.home}</run>
                                 </runCmds>
+                                
+                                <user>${user}</user>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
                             </build>
                             <run>
                                 <namingStrategy>alias</namingStrategy>

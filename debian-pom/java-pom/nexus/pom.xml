@@ -53,6 +53,7 @@
                                 </env>
                                 <optimise>${optimise}</optimise>
                                 <volumes>
+                                    <volume>${nexus.data}</volume>
                                     <volume>${sonatype.work}</volume>
                                 </volumes>
                                 <cmd>
@@ -94,7 +95,18 @@
                                     <run>tar -zxf nexus-${nexus.version}-unix.tar.gz -C ${opt.folder.path}</run>
                                     <run>rm -f nexus-${nexus.version}-unix.tar.gz</run>
                                     <run>mv -T ${opt.folder.path}/nexus-${nexus.version} ${nexus.home}</run>
+                                    
+                                    <!-- create data folders -->
+                                    <run>mkdir -p ${nexus.data}</run>
+                                    <run>mkdir -p ${sonatype.work}</run>
+                                    
+                                    <!-- change permissions -->
+                                    <run>chown -R ${user}.${group} ${maven.home}</run>
+                                    <run>chown -R ${user}.${group} ${nexus.home}</run>
+                                    <run>chown -R ${user}.${group} ${nexus.data}</run>
+                                    <run>chown -R ${user}.${group} ${sonatype.work}</run>
                                 </runCmds>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

@@ -13,11 +13,11 @@
 
     <properties>
         <jenkins.version>2.89.4</jenkins.version>
-        <jenkins.checksum>86a2e7aaded0e65b46cc544f379f9ff9</jenkins.checksum>
         <jenkins.home>${opt.folder.path}/jenkins</jenkins.home>
     </properties>
 
     <modules>
+    	<module>jenkins-base</module>
         <module>jenkins</module>
         <module>jenkins-jce</module>
     </modules>

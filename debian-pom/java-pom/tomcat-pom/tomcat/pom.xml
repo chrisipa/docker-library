@@ -13,7 +13,7 @@
     <artifactId>tomcat</artifactId>
 
     <packaging>docker</packaging>
-
+    
     <build>
         <plugins>
             <plugin>
@@ -44,6 +44,7 @@
                                         <args>run</args>
                                     </exec>
                                 </cmd>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

@@ -60,7 +60,11 @@
                                     <!-- add executables to path -->
                                     <run>update-alternatives --install "/usr/bin/ant" "ant" "${ant.home}/bin/ant" 1</run>
                                     <run>update-alternatives --set "ant" "${ant.home}/bin/ant"</run>
+                                    
+                                    <!-- change permissions -->
+                                    <run>chown -R ${user}.${group} ${ant.home}</run>
                                 </runCmds>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # include parent entrypoint script
-source /jmeter-base.sh
+source /jenkins-base.sh
 
 # execute command
-exec jmeter.sh "$@"
+exec "$@"

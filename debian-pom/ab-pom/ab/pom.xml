@@ -29,19 +29,14 @@
                                 <tags>
                                     <tag>${image.tag}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/debian-base:${debian.version}</from>
+                                <from>${registry}/${tenant}/ab-base:latest</from>
                                 <optimise>${optimise}</optimise>
-                                <runCmds>
-                                    <!-- install additional packages -->
-                                    <run>apt-get update</run>
-                                    <run>apt-get install -y apache2-utils</run>
-                                    <run>apt-get clean</run>
-                                </runCmds>
                                 <entryPoint>
                                     <exec>
                                         <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

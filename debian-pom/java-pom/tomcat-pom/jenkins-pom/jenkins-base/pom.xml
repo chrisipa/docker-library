@@ -6,13 +6,17 @@
 
     <parent>
         <groupId>de.papke.docker</groupId>
-        <artifactId>java-pom</artifactId>
+        <artifactId>jenkins-pom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mvn</artifactId>
+    <artifactId>jenkins-base</artifactId>
 
     <packaging>docker</packaging>
+    
+    <properties>
+    	<jenkins.checksum>86a2e7aaded0e65b46cc544f379f9ff9</jenkins.checksum>
+    </properties>
 
     <build>
         <plugins>
@@ -25,16 +29,17 @@
                     <images>
                         <image>
                             <name>${registry}/${tenant}/${project.artifactId}</name>
+                            <alias>${project.artifactId}</alias>
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
-                                    <tag>${maven.version}</tag>
-                                    <tag>${maven.major.version}</tag>
+                                    <tag>${jenkins.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
+                                <from>${registry}/${tenant}/tomcat-base:${tomcat.version}</from>
                                 <!-- set environment variables -->
                                 <env>
-                                    <M2_HOME>${maven.home}</M2_HOME>
+                                    <JENKINS_HOME>${jenkins.home}</JENKINS_HOME>
+                                    <MAVEN_HOME>${maven.home}</MAVEN_HOME>
                                 </env>
                                 <optimise>${optimise}</optimise>
                                 <entryPoint>
@@ -42,7 +47,29 @@
                                         <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
+                                <cmd>
+                                    <exec>
+                                        <args>catalina.sh</args>
+                                        <args>run</args>
+                                    </exec>
+                                </cmd>
+                                <workdir>${jenkins.home}</workdir>
+                                <ports>
+                                    <port>8080</port>
+                                    <port>5000</port>
+                                </ports>
                                 <runCmds>
+                                    <!-- install additional packages -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get install -y gawk git</run>
+                                    <run>apt-get clean</run>
+
+                                    <!-- download and extract jenkins to webapps folder -->
+                                    <run>wget -q http://mirrors.jenkins.io/war-stable/${jenkins.version}/jenkins.war</run>
+                                    <run>echo "${jenkins.checksum} jenkins.war" | md5sum -c</run>
+                                    <run>unzip -q jenkins.war -d ${tomcat.webapps.folder}/jenkins</run>
+                                    <run>rm -f jenkins.war</run>
+
                                     <!-- download and extract maven to opt folder -->
                                     <run>wget -q http://archive.apache.org/dist/maven/maven-${maven.major.version}/${maven.version}/binaries/apache-maven-${maven.version}-bin.tar.gz</run>
                                     <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
@@ -56,15 +83,30 @@
                                     
                                     <!-- change permissions -->
                                     <run>chown -R ${user}.${group} ${maven.home}</run>
+                                    <run>chown -R ${user}.${group} ${catalina.home}</run>
+                                    <run>chown -R ${user}.${group} ${jenkins.home}</run>
                                 </runCmds>
-                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>
                                         <fileSets>
                                             <fileSet>
-                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <directory>${project.basedir}/src/main/resources/entrypoint</directory>
                                                 <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/conf</directory>
+                                                <outputDirectory>${catalina.home}/conf</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/ROOT</directory>
+                                                <outputDirectory>${tomcat.webapps.folder}/ROOT</outputDirectory>
                                                 <includes>
                                                     <include>**/*</include>
                                                 </includes>

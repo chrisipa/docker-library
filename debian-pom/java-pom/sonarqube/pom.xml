@@ -16,8 +16,8 @@
 
     <properties>
         <sonarqube.home>${opt.folder.path}/sonarqube</sonarqube.home>
-        <sonarqube.version>5.6</sonarqube.version>
-        <sonarqube.checksum>841a92d83a4bcb13b5fe022e00c1e0b8</sonarqube.checksum>
+        <sonarqube.version>6.7.2</sonarqube.version>
+        <sonarqube.checksum>6efa2551d2c1f26cf40e000522226292</sonarqube.checksum>
     </properties>
 
     <build>
@@ -89,7 +89,11 @@
 
                                     <!-- remove  unused folders -->
                                     <run>rm -rf ${sonarqube.home}/bin</run>
+                                    
+                                    <!-- change permissions -->
+                                    <run>chown -R ${user}.${group} ${sonarqube.home}</run>
                                 </runCmds>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

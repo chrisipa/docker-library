@@ -38,6 +38,7 @@
                                         <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

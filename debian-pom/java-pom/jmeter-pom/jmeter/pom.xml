@@ -14,10 +14,6 @@
 
     <packaging>docker</packaging>
 
-    <properties>
-        <jmeter.checksum>53dc44a6379b7b4a57976936f3a65e03</jmeter.checksum>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -34,26 +30,14 @@
                                     <tag>${image.tag}</tag>
                                     <tag>${jmeter.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
-                                <!-- set environment variables -->
-                                <env>
-                                    <JMETER_HOME>${jmeter.home}</JMETER_HOME>
-                                    <PATH>$PATH:${jmeter.home}/bin</PATH>
-                                </env>
+                                <from>${registry}/${tenant}/jmeter-base:${jmeter.version}</from>
                                 <optimise>${optimise}</optimise>
                                 <entryPoint>
                                     <exec>
                                         <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
-                                <runCmds>
-                                    <!-- download and extract jmeter to opt folder -->
-                                    <run>wget -q http://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${jmeter.version}.tgz</run>
-                                    <run>echo "${jmeter.checksum} apache-jmeter-${jmeter.version}.tgz" | md5sum -c</run>
-                                    <run>tar -zxf apache-jmeter-${jmeter.version}.tgz -C ${opt.folder.path}</run>
-                                    <run>mv ${opt.folder.path}/apache-jmeter-${jmeter.version} ${jmeter.home}</run>
-                                    <run>rm -f apache-jmeter-${jmeter.version}.tgz</run>
-                                </runCmds>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>
