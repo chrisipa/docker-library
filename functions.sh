@@ -120,15 +120,17 @@ Options:
   -p <project-list>     Build comma separated maven project list
   -s                    Create docker containers from images and start them
   -t <tag>              Build with specified image tag
+  -v					Verbose logging of errors (optimise flag false)
 
 Examples:
-  $0                                    Build all docker images
-  $0 -c                                 Remove all docker containers and images
-  $0 -p debian,jdk                      Build only docker images for 'debian' and 'jdk'
-  $0 -p debian,jdk -t master -f         -> and tag with name 'master'
-  $0 -p debian,jdk -t master -f         -> and do not use docker build cache
-  $0 -p debian,jdk -t master -f -s      -> and start containers
-  $0 -p debian,jdk -t master -f -s -d   -> and deploy to docker registry
+  $0                                     Build all docker images
+  $0 -c                                  Remove all docker containers and images
+  $0 -p debian,jdk                       Build only docker images for 'debian' and 'jdk'
+  $0 -p debian,jdk -t master -f          -> and tag with name 'master'
+  $0 -p debian,jdk -t master -f          -> and do not use docker build cache
+  $0 -p debian,jdk -t master -f -s       -> and start containers
+  $0 -p debian,jdk -t master -f -s -d    -> and deploy to docker registry
+  $0 -p debian,jdk -t master -f -s -d -v -> and verbose logging of errors
 
 USAGE
 

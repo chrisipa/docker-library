@@ -16,7 +16,7 @@ mavenParameter=""
 mavenProjects=""
 
 # get command line args
-while getopts cdfhp:st: opt
+while getopts cdfhp:st:v opt
 do
     case $opt in
         c)
@@ -40,6 +40,9 @@ do
         t)
             mavenParameter="$mavenParameter -D image.tag=$OPTARG"
         ;;
+        v)
+        	mavenParameter="$mavenParameter -D optimise=false"
+       	;;
         \?)
             log "ERROR" "Invalid option: -$OPTARG"
             exit -1
