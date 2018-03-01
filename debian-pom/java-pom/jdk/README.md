@@ -27,6 +27,7 @@ This Tomcat docker image contains the following software components:
 1. Create sub folder for trusted SSL certificates:
   ```
   sudo mkdir -p /opt/ssl/trusted
+  sudo chown 1000.1000 /opt/ssl/trusted
   ```
 
 2. Use [OpenSSL](https://www.openssl.org/) to download the self signed certificate to trusted SSL certificates folder:

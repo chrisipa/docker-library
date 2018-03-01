@@ -34,12 +34,13 @@ These Jenkins ports are exposed:
 
 1. Create a folder for Jenkins data on the docker host:
   ```
-  sudo mkdir -p /opt/docker/jenkins
+  sudo mkdir -p /opt/jenkins
+  sudo chown 1000.1000 /opt/jenkins
   ```
 
 2. Run Jenkins container with this command:
   ```
-docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v /opt/docker/jenkins:/opt/jenkins chrisipa/jenkins
+docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v /opt/jenkins:/opt/jenkins chrisipa/jenkins
   ```
 
 ## Advanced topics

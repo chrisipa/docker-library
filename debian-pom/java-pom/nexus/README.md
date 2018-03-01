@@ -52,12 +52,13 @@ When you start the Nexus container, you can adjust the configuration by passing 
 
 1. Create a folder for Sonatype work data on the docker host:
   ```
-  sudo mkdir -p /opt/docker/sonatype-work
+  sudo mkdir -p /opt/sonatype-work
+  sudo chown 1000.1000 /opt/sonatype-work
   ```
 
 2. Run Nexus container with this command:
   ```
-docker run -d --name nexus -p 8081:8081 -v /opt/docker/sonatype-work:/opt/sonatype-work chrisipa/nexus
+docker run -d --name nexus -p 8081:8081 -v /opt/sonatype-work:/opt/sonatype-work chrisipa/nexus
   ```
 
 ## Advanced topics
