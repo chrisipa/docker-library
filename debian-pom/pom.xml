@@ -15,8 +15,8 @@
         <opt.folder.path>/opt</opt.folder.path>
         <data.folder>${opt.folder.path}/docker</data.folder>
         <debian.version>8</debian.version>
-		<uid>1000</uid>
-    	<gid>1000</gid>
+		<uid>1001</uid>
+    	<gid>1001</gid>
     	<user>${tenant}</user>
     	<group>${tenant}</group>       
     	<bash.rc.file>/home/${user}/.bashrc</bash.rc.file>  
