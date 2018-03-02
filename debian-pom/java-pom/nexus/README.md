@@ -1,7 +1,10 @@
-Nexus
-=====
+Sonatype Nexus
+==============
 
 Nexus docker image based on Debian Jessie and Oracle JDK 8.
+
+# Source Code
+Sources to build this Docker image can be found [here](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/nexus).
 
 # Description
 This Nexus docker image contains the following software components:
@@ -41,6 +44,14 @@ When you start the Nexus container, you can adjust the configuration by passing 
 
 ## Using docker
 
+### Preparation: Create a underprivileged user on the host system
+
+1. Create group and user:
+  ```
+  sudo groupadd -g 1001 chrisipa
+  sudo useradd -u 1001 -g 1001 -m -s /usr/sbin/nologin chrisipa
+  ```  
+
 ### Example 1: Evaluation usage without persistent data
 
 1. Run Nexus container with this command:
@@ -53,13 +64,32 @@ When you start the Nexus container, you can adjust the configuration by passing 
 1. Create a folder for Sonatype work data on the docker host:
   ```
   sudo mkdir -p /opt/sonatype-work
-  sudo chown 1000.1000 /opt/sonatype-work
+  sudo chown 1001.1001 /opt/sonatype-work
   ```
 
 2. Run Nexus container with this command:
   ```
 docker run -d --name nexus -p 8081:8081 -v /opt/sonatype-work:/opt/sonatype-work chrisipa/nexus
   ```
+  
+### Example 3: Real world usage running docker-compose
+
+1. Create docker compose file `docker-compose.yml` with your configuration data:
+  ```yml
+  nexus:
+    image: chrisipa/nexus:latest
+    volumes:    
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /opt/sonatype-work:/opt/sonatype-work
+    ports:
+      - 8081:8081
+  ```
+
+2. Run docker containers with docker compose:
+  ```
+  docker-compose up -d
+  ```  
 
 ## Advanced topics
 
