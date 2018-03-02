@@ -1,7 +1,7 @@
 Jenkins (JCE)
 =============
 
-Jenkins docker image with useful tools for Java development with Maven builds including Java cryptography extension.
+Jenkins docker image with useful tools for Java development with Maven builds including JCE.
 
 # Source Code
 Sources to build this docker image can be found [here](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/tomcat-pom/jenkins-pom/jenkins-jce).
