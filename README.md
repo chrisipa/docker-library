@@ -1,10 +1,10 @@
 # Docker Library
 
-Docker library project for building useful Docker images with the maven docker plugin.
+Docker library project for building useful docker images with the maven docker plugin.
 
 ## Images
 
-Here's a list of all Docker images sorted by category.
+Here's a list of all docker images sorted by category.
 
 ### Artifact Repositories
 
@@ -12,9 +12,9 @@ Here's a list of all Docker images sorted by category.
 
 ### Build Tools
 
-* [Apache Ant](debian-pom/java-pom/ant/README.md)
-* [Apache Maven](debian-pom/java-pom/mvn/README.md)
-* [Gradle](debian-pom/debian/README.md)
+* [Apache Ant](debian-pom/java-pom/build-tool-pom/ant/README.md)
+* [Apache Maven](debian-pom/java-pom/build-tool-pom/mvn/README.md)
+* [Gradle](debian-pom/java-pom/build-tool-pom/gradle/README.md)
 * [Jenkins](debian-pom/java-pom/tomcat-pom/jenkins-pom/jenkins/README.md)
 * [Jenkins JCE](debian-pom/java-pom/tomcat-pom/jenkins-pom/jenkins-jce/README.md)
 
@@ -39,7 +39,7 @@ Here's a list of all Docker images sorted by category.
 
 ### Web Servers
 
-* [Apache HTTPD](debian-pom/apache)
+* [Apache HTTPD](debian-pom/apache/README.md)
 * [Apache Tomcat](debian-pom/java-pom/tomcat-pom/tomcat/README.md)
 
 ## Build
@@ -67,7 +67,7 @@ To build this project you'll have to install some tools on your machine.
       -p <project-list>     Build comma separated maven project list
       -s                    Create docker containers from images and start them
       -t <tag>              Build with specified image tag
-      -v					   Verbose logging of errors (optimise flag false)
+      -v                    Verbose logging of errors (optimise flag false)
 
     Examples:
       ./build.sh                                     Build all docker images

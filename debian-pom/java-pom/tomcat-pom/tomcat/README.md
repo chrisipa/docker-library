@@ -3,11 +3,14 @@ Apache Tomcat
 
 Apache Tomcat docker image based on Debian Jessie and Oracle JDK 8.
 
+# Source Code
+Sources to build this docker image can be found [here](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/tomcat-pom/tomcat).
+
 # Description
 This Tomcat docker image contains the following software components:
 
  - [Oracle JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
- - [Apache Tomcat 7](https://tomcat.apache.org/index.html)
+ - [Apache Tomcat 9](https://tomcat.apache.org/index.html)
 
 ## Ports
 These tcp ports are exposed:
@@ -33,11 +36,47 @@ When you start the Tomcat container, you can adjust the configuration by passing
 
 ## Using docker
 
-### Example 1: Run Tomcat container with java memory options for max heap size
+### Preparation: Create a underprivileged user on the host system
 
-Run the Tomcat container with the following command:
+1. Create group and user:
   ```
-  docker run --name tomcat -d -p 8080:8080 -p 8443:8443 -e "CATALINA_OPTS=-Xmx768m" chrisipa/tomcat
+  sudo groupadd -g 1001 chrisipa
+  sudo useradd -u 1001 -g 1001 -m -s /usr/sbin/nologin chrisipa
+
+### Example 1: Run evaluation version
+
+1. Run the Tomcat container with the following command:
+  ```
+  docker run --rm -p 8080:8080 -p 8443:8443 chrisipa/tomcat
+  ```
+
+### Example 2: Run Tomcat container with java memory options for max heap size
+
+1. Run the Tomcat container with the following command:
+  ```
+  docker run --rm -p 8080:8080 -p 8443:8443 -e "CATALINA_OPTS=-Xmx768m" chrisipa/tomcat
+  ```
+
+### Example 3: Run your own web application in daemon mode
+
+1. Create webapps folder on host system:
+  ```
+  sudo mkdir -p /opt/tomcat/webapps  
+  ```  
+  
+2. Copy your own war to webapps folder:
+  ```
+  sudo cp my-app.war /opt/tomcat/webapps  
+  ```    
+
+3. Change permissions on webapps folder:
+  ```
+  sudo chown -R 1001.1001 /opt/tomcat/webapps 
+  ```  
+
+4. Run the Tomcat container with the following command:
+  ```
+  docker run -d -p 8080:8080 -p 8443:8443 -v /opt/tomcat/webapps:/opt/tomcat/webapps chrisipa/tomcat
   ```
 
 ## Advanced topics

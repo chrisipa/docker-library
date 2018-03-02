@@ -49,18 +49,20 @@
                                 	<run>useradd -u ${uid} -g ${gid} -m -s /bin/bash ${user}</run>       
                                 	
                                     <!-- add color options to .bashrc file -->
-                                    <run>echo 'export LS_OPTIONS="--color=auto"' >> ${bash.rc.file}</run>
-                                    <run>echo 'eval "`dircolors`"' >> ${bash.rc.file}</run>
+                                    <run>echo 'export LS_OPTIONS="--color=auto"' >> ${bash.rc.file.root}</run>
+                                    <run>echo 'eval "`dircolors`"' >> ${bash.rc.file.root}</run>
 
                                     <!-- add aliases to .bashrc file -->
-                                    <run>echo 'alias ls="ls $LS_OPTIONS"' >> ${bash.rc.file}</run>
-                                    <run>echo 'alias l="ls -altrh"' >> ${bash.rc.file}</run>
-                                    <run>echo 'alias ..="cd .."' >> ${bash.rc.file}</run>
+                                    <run>echo 'alias ls="ls $LS_OPTIONS"' >> ${bash.rc.file.root}</run>
+                                    <run>echo 'alias l="ls -altrh"' >> ${bash.rc.file.root}</run>
+                                    <run>echo 'alias ..="cd .."' >> ${bash.rc.file.root}</run>
 
                                     <!-- enable history search in inputrc file -->
                                     <run>echo '"\e[5~": history-search-backward' >> ${input.rc.file}</run>
                                     <run>echo '"\e[6~": history-search-forward' >> ${input.rc.file}</run>
 
+									<!-- copy .bashrc file from root home to user home -->
+									<run>cp ${bash.rc.file.root} ${bash.rc.file.user}</run>
                                 </runCmds>
                                 <entryPoint>
                                     <exec>

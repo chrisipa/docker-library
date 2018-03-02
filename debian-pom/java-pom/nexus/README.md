@@ -4,7 +4,7 @@ Sonatype Nexus
 Nexus docker image based on Debian Jessie and Oracle JDK 8.
 
 # Source Code
-Sources to build this Docker image can be found [here](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/nexus).
+Sources to build this docker image can be found [here](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/nexus).
 
 # Description
 This Nexus docker image contains the following software components:
@@ -56,7 +56,7 @@ When you start the Nexus container, you can adjust the configuration by passing 
 
 1. Run Nexus container with this command:
   ```
-  docker run -d -p 8081:8081 chrisipa/nexus
+  docker run --rm -p 8081:8081 chrisipa/nexus
   ```
 
 ### Example 2: Production usage with mounted volume and context path

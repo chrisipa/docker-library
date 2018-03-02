@@ -6,17 +6,19 @@
 
     <parent>
         <groupId>de.papke.docker</groupId>
-        <artifactId>jmeter-pom</artifactId>
+        <artifactId>build-tool-pom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jmeter-base</artifactId>
+    <artifactId>ant</artifactId>
 
     <packaging>docker</packaging>
-
+    
     <properties>
-        <jmeter.checksum>53dc44a6379b7b4a57976936f3a65e03</jmeter.checksum>
-        <jmeter.plan.folder>/plan</jmeter.plan.folder>
+    	<ant.major.version>1</ant.major.version>
+    	<ant.version>${ant.major.version}.10.2</ant.version>
+    	<ant.checksum>51b89be8b73812230d2ee12ea58442fd</ant.checksum>
+    	<ant.home>${opt.folder.path}/ant</ant.home>
     </properties>
 
     <build>
@@ -33,13 +35,13 @@
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
-                                    <tag>${jmeter.version}</tag>
+                                    <tag>${ant.version}</tag>
+                                    <tag>${ant.major.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
+                                <from>${registry}/${tenant}/build-tool-base:${image.tag}</from>
                                 <!-- set environment variables -->
                                 <env>
-                                    <JMETER_HOME>${jmeter.home}</JMETER_HOME>
-                                    <PATH>$PATH:${jmeter.home}/bin</PATH>
+                                    <ANT_HOME>${ant.home}</ANT_HOME>
                                 </env>
                                 <optimise>${optimise}</optimise>
                                 <entryPoint>
@@ -48,21 +50,21 @@
                                     </exec>
                                 </entryPoint>
                                 <runCmds>
-                                    <!-- download and extract jmeter to opt folder -->
-                                    <run>wget -q http://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${jmeter.version}.tgz</run>
-                                    <run>echo "${jmeter.checksum} apache-jmeter-${jmeter.version}.tgz" | md5sum -c</run>
-                                    <run>tar -zxf apache-jmeter-${jmeter.version}.tgz -C ${opt.folder.path}</run>
-                                    <run>mv ${opt.folder.path}/apache-jmeter-${jmeter.version} ${jmeter.home}</run>
-                                    <run>rm -f apache-jmeter-${jmeter.version}.tgz</run>
-                                    
-                                    <!-- create plan folder -->
-                                    <run>mkdir -p ${jmeter.plan.folder}</run>
+                                    <!-- download and extract ant to opt folder -->
+                                    <run>wget -q http://archive.apache.org/dist/ant/binaries/apache-ant-${ant.version}-bin.tar.gz</run>
+                                    <run>echo "${ant.checksum} apache-ant-${ant.version}-bin.tar.gz" | md5sum -c</run>
+                                    <run>tar -zxf apache-ant-${ant.version}-bin.tar.gz -C ${opt.folder.path}</run>
+                                    <run>rm -f apache-ant-${ant.version}-bin.tar.gz</run>
+                                    <run>mv -T ${opt.folder.path}/apache-ant-${ant.version} ${ant.home}</run>
+
+                                    <!-- add executables to path -->
+                                    <run>update-alternatives --install "/usr/bin/ant" "ant" "${ant.home}/bin/ant" 1</run>
+                                    <run>update-alternatives --set "ant" "${ant.home}/bin/ant"</run>
                                     
                                     <!-- change permissions -->
-                                    <run>chown -R ${user}.${group} ${jmeter.home}</run>
-                                    <run>chown -R ${user}.${group} ${jmeter.plan.folder}</run>
+                                    <run>chown -R ${user}.${group} ${ant.home}</run>
                                 </runCmds>
-                                <workdir>${jmeter.plan.folder}</workdir>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

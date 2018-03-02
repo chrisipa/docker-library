@@ -15,16 +15,11 @@
     <packaging>docker</packaging>
 
     <properties>
-        <ajp.host>localhost</ajp.host>
         <apache.version>2.4</apache.version>
-        <apache.run.user>www-data</apache.run.user>
-        <apache.run.group>${apache.run.user}</apache.run.group>
         <apache.home>/etc/apache2</apache.home>
         <apache.config.folder>${apache.home}/conf-enabled</apache.config.folder>
         <apache.log.folder>/var/log/apache2</apache.log.folder>
         <ssl.folder>${opt.folder.path}/ssl/apache2</ssl.folder>
-        <server.name>localhost</server.name>
-        <server.alias>${server.name}</server.alias>
     </properties>
 
     <build>
@@ -46,18 +41,7 @@
                                 <from>${registry}/${tenant}/debian-base:${debian.version}</from>
                                 <!-- set environment variables -->
                                 <env>
-                                    <AJP_HOST>${ajp.host}</AJP_HOST>
-                                    <APACHE_HOME>${apache.home}</APACHE_HOME>
-                                    <APACHE_RUN_USER>${apache.run.user}</APACHE_RUN_USER>
-                                    <APACHE_RUN_GROUP>${apache.run.group}</APACHE_RUN_GROUP>
-                                    <APACHE_LOG_FOLDER>${apache.log.folder}</APACHE_LOG_FOLDER>
-                                    <APACHE_CONFIG_FOLDER>${apache.config.folder}</APACHE_CONFIG_FOLDER>
-                                    <SERVER_NAME>${server.name}</SERVER_NAME>
-                                    <SERVER_ALIAS>${server.alias}</SERVER_ALIAS>
                                     <SSL_FOLDER>${ssl.folder}</SSL_FOLDER>
-                                    <SSL_CERTIFICATE_FILE>${ssl.folder}/server.crt</SSL_CERTIFICATE_FILE>
-                                    <SSL_KEY_FILE>${ssl.folder}/server.key</SSL_KEY_FILE>
-                                    <SSL_CERTIFICATE_CHAIN_FILE>${ssl.folder}/ca.crt</SSL_CERTIFICATE_CHAIN_FILE>
                                 </env>
                                 <optimise>${optimise}</optimise>
                                 <workdir>${apache.home}</workdir>
@@ -77,8 +61,6 @@
                                     <!-- enable configuration -->
                                     <run>a2enmod deflate headers proxy proxy_ajp rewrite ssl</run>
                                     <run>rm ${apache.home}/sites-enabled/*</run>
-
-                                    <!-- -->
                                 </runCmds>
                                 <volumes>
                                     <volume>${apache.log.folder}</volume>

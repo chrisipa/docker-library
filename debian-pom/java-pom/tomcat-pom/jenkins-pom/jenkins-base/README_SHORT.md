@@ -1,0 +1,1 @@
+Jenkins docker base image with useful tools for Java development with Maven builds.

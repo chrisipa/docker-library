@@ -6,18 +6,13 @@
 
     <parent>
         <groupId>de.papke.docker</groupId>
-        <artifactId>jmeter-pom</artifactId>
+        <artifactId>build-tool-pom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jmeter-base</artifactId>
+    <artifactId>mvn</artifactId>
 
     <packaging>docker</packaging>
-
-    <properties>
-        <jmeter.checksum>53dc44a6379b7b4a57976936f3a65e03</jmeter.checksum>
-        <jmeter.plan.folder>/plan</jmeter.plan.folder>
-    </properties>
 
     <build>
         <plugins>
@@ -33,13 +28,13 @@
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
-                                    <tag>${jmeter.version}</tag>
+                                    <tag>${maven.version}</tag>
+                                    <tag>${maven.major.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
+                                <from>${registry}/${tenant}/build-tool-base:${image.tag}</from>
                                 <!-- set environment variables -->
                                 <env>
-                                    <JMETER_HOME>${jmeter.home}</JMETER_HOME>
-                                    <PATH>$PATH:${jmeter.home}/bin</PATH>
+                                    <M2_HOME>${maven.home}</M2_HOME>
                                 </env>
                                 <optimise>${optimise}</optimise>
                                 <entryPoint>
@@ -48,21 +43,21 @@
                                     </exec>
                                 </entryPoint>
                                 <runCmds>
-                                    <!-- download and extract jmeter to opt folder -->
-                                    <run>wget -q http://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${jmeter.version}.tgz</run>
-                                    <run>echo "${jmeter.checksum} apache-jmeter-${jmeter.version}.tgz" | md5sum -c</run>
-                                    <run>tar -zxf apache-jmeter-${jmeter.version}.tgz -C ${opt.folder.path}</run>
-                                    <run>mv ${opt.folder.path}/apache-jmeter-${jmeter.version} ${jmeter.home}</run>
-                                    <run>rm -f apache-jmeter-${jmeter.version}.tgz</run>
-                                    
-                                    <!-- create plan folder -->
-                                    <run>mkdir -p ${jmeter.plan.folder}</run>
+                                    <!-- download and extract maven to opt folder -->
+                                    <run>wget -q http://archive.apache.org/dist/maven/maven-${maven.major.version}/${maven.version}/binaries/apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
+                                    <run>tar -zxf apache-maven-${maven.version}-bin.tar.gz -C ${opt.folder.path}</run>
+                                    <run>rm -f apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>mv -T ${opt.folder.path}/apache-maven-${maven.version} ${maven.home}</run>
+
+                                    <!-- add executables to path -->
+                                    <run>update-alternatives --install "/usr/bin/mvn" "mvn" "${maven.home}/bin/mvn" 1</run>
+                                    <run>update-alternatives --set "mvn" "${maven.home}/bin/mvn"</run>
                                     
                                     <!-- change permissions -->
-                                    <run>chown -R ${user}.${group} ${jmeter.home}</run>
-                                    <run>chown -R ${user}.${group} ${jmeter.plan.folder}</run>
+                                    <run>chown -R ${user}.${group} ${maven.home}</run>
                                 </runCmds>
-                                <workdir>${jmeter.plan.folder}</workdir>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

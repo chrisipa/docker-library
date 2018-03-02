@@ -6,19 +6,18 @@
 
     <parent>
         <groupId>de.papke.docker</groupId>
-        <artifactId>jmeter-pom</artifactId>
+        <artifactId>build-tool-pom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jmeter-base</artifactId>
+    <artifactId>build-tool-base</artifactId>
 
     <packaging>docker</packaging>
-
+    
     <properties>
-        <jmeter.checksum>53dc44a6379b7b4a57976936f3a65e03</jmeter.checksum>
-        <jmeter.plan.folder>/plan</jmeter.plan.folder>
+    	<build.folder>/build</build.folder>
     </properties>
-
+    
     <build>
         <plugins>
             <plugin>
@@ -33,36 +32,22 @@
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
-                                    <tag>${jmeter.version}</tag>
                                 </tags>
                                 <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
-                                <!-- set environment variables -->
-                                <env>
-                                    <JMETER_HOME>${jmeter.home}</JMETER_HOME>
-                                    <PATH>$PATH:${jmeter.home}/bin</PATH>
-                                </env>
                                 <optimise>${optimise}</optimise>
                                 <entryPoint>
                                     <exec>
                                         <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
-                                <runCmds>
-                                    <!-- download and extract jmeter to opt folder -->
-                                    <run>wget -q http://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${jmeter.version}.tgz</run>
-                                    <run>echo "${jmeter.checksum} apache-jmeter-${jmeter.version}.tgz" | md5sum -c</run>
-                                    <run>tar -zxf apache-jmeter-${jmeter.version}.tgz -C ${opt.folder.path}</run>
-                                    <run>mv ${opt.folder.path}/apache-jmeter-${jmeter.version} ${jmeter.home}</run>
-                                    <run>rm -f apache-jmeter-${jmeter.version}.tgz</run>
-                                    
-                                    <!-- create plan folder -->
-                                    <run>mkdir -p ${jmeter.plan.folder}</run>
+                                <runCmds>                                       
+                                    <!-- create build folder -->
+                                    <run>mkdir -p ${build.folder}</run>
                                     
                                     <!-- change permissions -->
-                                    <run>chown -R ${user}.${group} ${jmeter.home}</run>
-                                    <run>chown -R ${user}.${group} ${jmeter.plan.folder}</run>
+                                    <run>chown -R ${user}.${group} ${build.folder}</run>
                                 </runCmds>
-                                <workdir>${jmeter.plan.folder}</workdir>
+                                <workdir>${build.folder}</workdir>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

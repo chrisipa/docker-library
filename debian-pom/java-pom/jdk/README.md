@@ -3,6 +3,9 @@ Oracle JDK
 
 JDK docker image based on Debian Jessie and Oracle JDK 8.
 
+# Source Code
+Sources to build this docker image can be found [here](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/jdk).
+
 # Description
 
 This Tomcat docker image contains the following software components:

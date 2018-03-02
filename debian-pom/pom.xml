@@ -19,7 +19,8 @@
     	<gid>1001</gid>
     	<user>${tenant}</user>
     	<group>${tenant}</group>       
-    	<bash.rc.file>/home/${user}/.bashrc</bash.rc.file>  
+    	<bash.rc.file.root>/root/.bashrc</bash.rc.file.root>
+    	<bash.rc.file.user>/home/${user}/.bashrc</bash.rc.file.user>  
     	<input.rc.file>/etc/inputrc</input.rc.file>  
     </properties>
 

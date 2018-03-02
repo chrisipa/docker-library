@@ -6,17 +6,19 @@
 
     <parent>
         <groupId>de.papke.docker</groupId>
-        <artifactId>jmeter-pom</artifactId>
+        <artifactId>build-tool-pom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jmeter-base</artifactId>
+    <artifactId>gradle</artifactId>
 
     <packaging>docker</packaging>
-
+    
     <properties>
-        <jmeter.checksum>53dc44a6379b7b4a57976936f3a65e03</jmeter.checksum>
-        <jmeter.plan.folder>/plan</jmeter.plan.folder>
+    	<gradle.major.version>4</gradle.major.version>
+    	<gradle.version>${gradle.major.version}.5.1</gradle.version>
+    	<gradle.checksum>acb2073b46bc285de9e957534ae69078</gradle.checksum>
+    	<gradle.home>${opt.folder.path}/gradle</gradle.home>
     </properties>
 
     <build>
@@ -33,13 +35,13 @@
                             <build>
                                 <tags>
                                     <tag>${image.tag}</tag>
-                                    <tag>${jmeter.version}</tag>
+                                    <tag>${gradle.version}</tag>
+                                    <tag>${gradle.major.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
+                                <from>${registry}/${tenant}/build-tool-base:${image.tag}</from>
                                 <!-- set environment variables -->
                                 <env>
-                                    <JMETER_HOME>${jmeter.home}</JMETER_HOME>
-                                    <PATH>$PATH:${jmeter.home}/bin</PATH>
+                                    <GRADLE_HOME>${gradle.home}</GRADLE_HOME>
                                 </env>
                                 <optimise>${optimise}</optimise>
                                 <entryPoint>
@@ -48,21 +50,21 @@
                                     </exec>
                                 </entryPoint>
                                 <runCmds>
-                                    <!-- download and extract jmeter to opt folder -->
-                                    <run>wget -q http://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${jmeter.version}.tgz</run>
-                                    <run>echo "${jmeter.checksum} apache-jmeter-${jmeter.version}.tgz" | md5sum -c</run>
-                                    <run>tar -zxf apache-jmeter-${jmeter.version}.tgz -C ${opt.folder.path}</run>
-                                    <run>mv ${opt.folder.path}/apache-jmeter-${jmeter.version} ${jmeter.home}</run>
-                                    <run>rm -f apache-jmeter-${jmeter.version}.tgz</run>
-                                    
-                                    <!-- create plan folder -->
-                                    <run>mkdir -p ${jmeter.plan.folder}</run>
+                                    <!-- download and extract gradle to opt folder -->
+                                    <run>wget -q https://services.gradle.org/distributions/gradle-${gradle.version}-bin.zip</run>
+                                    <run>echo "${gradle.checksum} gradle-${gradle.version}-bin.zip" | md5sum -c</run>
+                                    <run>unzip -q gradle-${gradle.version}-bin.zip -d ${opt.folder.path}</run>
+                                    <run>rm -f gradle-${gradle.version}-bin.zip</run>
+                                    <run>mv -T ${opt.folder.path}/gradle-${gradle.version} ${gradle.home}</run>
+
+                                    <!-- add executables to path -->
+                                    <run>update-alternatives --install "/usr/bin/gradle" "gradle" "${gradle.home}/bin/gradle" 1</run>
+                                    <run>update-alternatives --set "gradle" "${gradle.home}/bin/gradle"</run>
                                     
                                     <!-- change permissions -->
-                                    <run>chown -R ${user}.${group} ${jmeter.home}</run>
-                                    <run>chown -R ${user}.${group} ${jmeter.plan.folder}</run>
+                                    <run>chown -R ${user}.${group} ${gradle.home}</run>
                                 </runCmds>
-                                <workdir>${jmeter.plan.folder}</workdir>
+                                <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>

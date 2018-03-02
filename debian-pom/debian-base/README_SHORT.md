@@ -1,0 +1,1 @@
+Debian docker base image based on Debian Jessie with useful debugging tools preinstalled.
