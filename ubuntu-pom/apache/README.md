@@ -17,7 +17,8 @@ These Apache HTTPD modules are activated by default:
   - deflate 
   - headers 
   - proxy 
-  - proxy_ajp 
+  - proxy_ajp
+  - proxy_http 
   - rewrite 
   - ssl
 
