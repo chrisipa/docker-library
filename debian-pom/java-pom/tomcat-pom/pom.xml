@@ -23,7 +23,6 @@
     <modules>
         <module>tomcat-base</module>
         <module>tomcat</module>
-        <module>jenkins-pom</module>
     </modules>
 
 </project>

@@ -38,12 +38,6 @@
                                         <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
-                                <cmd>
-                                    <exec>
-                                        <args>catalina.sh</args>
-                                        <args>run</args>
-                                    </exec>
-                                </cmd>
                                 <user>${user}</user>
                                 <assembly>
                                     <basedir>/</basedir>
@@ -62,18 +56,13 @@
                             </build>
                             <run>
                                 <namingStrategy>alias</namingStrategy>
-                                <volumes>
-                                    <bind>
-                                        <volume>/etc/localtime:/etc/localtime:ro</volume>
-                                        <volume>/etc/timezone:/etc/timezone:ro</volume>
-                                        <volume>${data.folder}/jenkins:${jenkins.home}</volume>
-                                    </bind>
-                                </volumes>
                                 <ports>
-                                    <port>5000:5000</port>
-                                    <port>5080:8080</port>
-                                    <port>5443:8443</port>
+                                    <port>8080:8080</port>
+                                    <port>50000:50000</port>
                                 </ports>
+                                <env>
+                                	<JENKINS_OPTS>--prefix=/jenkins</JENKINS_OPTS>
+                                </env>
                             </run>
                         </image>
                     </images>

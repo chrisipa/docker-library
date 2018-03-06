@@ -35,10 +35,11 @@
                                     <tag>${image.tag}</tag>
                                     <tag>${jenkins.version}</tag>
                                 </tags>
-                                <from>${registry}/${tenant}/tomcat-base:${tomcat.version}</from>
+                                <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
                                 <!-- set environment variables -->
                                 <env>
                                     <JENKINS_HOME>${jenkins.home}</JENKINS_HOME>
+                                	<JENKINS_DIST_FOLDER>${jenkins.dist.folder}</JENKINS_DIST_FOLDER>
                                     <MAVEN_HOME>${maven.home}</MAVEN_HOME>
                                 </env>
                                 <optimise>${optimise}</optimise>
@@ -47,12 +48,6 @@
                                         <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
-                                <cmd>
-                                    <exec>
-                                        <args>catalina.sh</args>
-                                        <args>run</args>
-                                    </exec>
-                                </cmd>
                                 <workdir>${jenkins.home}</workdir>
                                 <ports>
                                     <port>8080</port>
@@ -64,11 +59,11 @@
                                     <run>apt-get install -y gawk git</run>
                                     <run>apt-get clean</run>
 
-                                    <!-- download and extract jenkins to webapps folder -->
+                                    <!-- download and extract jenkins to dist folder -->
                                     <run>wget -q http://mirrors.jenkins.io/war-stable/${jenkins.version}/jenkins.war</run>
                                     <run>echo "${jenkins.checksum} jenkins.war" | md5sum -c</run>
-                                    <run>unzip -q jenkins.war -d ${tomcat.webapps.folder}/jenkins</run>
-                                    <run>rm -f jenkins.war</run>
+                                    <run>mkdir -p ${jenkins.dist.folder}</run>
+                                    <run>mv jenkins.war ${jenkins.dist.folder}</run>
 
                                     <!-- download and extract maven to opt folder -->
                                     <run>wget -q http://archive.apache.org/dist/maven/maven-${maven.major.version}/${maven.version}/binaries/apache-maven-${maven.version}-bin.tar.gz</run>
@@ -83,30 +78,16 @@
                                     
                                     <!-- change permissions -->
                                     <run>chown -R ${user}.${group} ${maven.home}</run>
-                                    <run>chown -R ${user}.${group} ${catalina.home}</run>
                                     <run>chown -R ${user}.${group} ${jenkins.home}</run>
+                                    <run>chown -R ${user}.${group} ${jenkins.dist.folder}</run>
                                 </runCmds>
                                 <assembly>
                                     <basedir>/</basedir>
                                     <inline>
                                         <fileSets>
                                             <fileSet>
-                                                <directory>${project.basedir}/src/main/resources/entrypoint</directory>
+                                                <directory>${project.basedir}/src/main/resources</directory>
                                                 <outputDirectory>/</outputDirectory>
-                                                <includes>
-                                                    <include>**/*</include>
-                                                </includes>
-                                            </fileSet>
-                                            <fileSet>
-                                                <directory>${project.basedir}/src/main/resources/conf</directory>
-                                                <outputDirectory>${catalina.home}/conf</outputDirectory>
-                                                <includes>
-                                                    <include>**/*</include>
-                                                </includes>
-                                            </fileSet>
-                                            <fileSet>
-                                                <directory>${project.basedir}/src/main/resources/ROOT</directory>
-                                                <outputDirectory>${tomcat.webapps.folder}/ROOT</outputDirectory>
                                                 <includes>
                                                     <include>**/*</include>
                                                 </includes>

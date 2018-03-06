@@ -38,12 +38,6 @@
                                         <args>/${project.artifactId}.sh</args>
                                     </exec>
                                 </entryPoint>
-                                <cmd>
-                                    <exec>
-                                        <args>catalina.sh</args>
-                                        <args>run</args>
-                                    </exec>
-                                </cmd>
                                 <runCmds>
                                     <!-- download zip file with java cryptography extension and unzip to jre security folder -->
                                     <run>wget -q --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip</run>
@@ -75,17 +69,9 @@
                             </build>
                             <run>
                                 <namingStrategy>alias</namingStrategy>
-                                <volumes>
-                                    <bind>
-                                        <volume>/etc/localtime:/etc/localtime:ro</volume>
-                                        <volume>/etc/timezone:/etc/timezone:ro</volume>
-                                        <volume>${data.folder}/jenkins:${jenkins.home}</volume>
-                                    </bind>
-                                </volumes>
                                 <ports>
-                                    <port>5000:5000</port>
-                                    <port>5080:8080</port>
-                                    <port>5443:8443</port>
+                                    <port>8080:8080</port>
+                                    <port>50000:50000</port>
                                 </ports>
                             </run>
                         </image>

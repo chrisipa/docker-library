@@ -4,14 +4,13 @@ Jenkins
 Jenkins docker image with useful tools for Java development with Maven builds.
 
 # Source Code
-Sources to build this docker image can be found [here](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/tomcat-pom/jenkins-pom/jenkins).
+Sources to build this docker image can be found [here](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/jenkins-pom/jenkins).
 
 # Description
 This Jenkins docker image contains the following software components:
 
  - [Oracle JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
  - [Apache Maven 3](https://maven.apache.org/download.cgi)
- - [Apache Tomcat 9](https://tomcat.apache.org/index.html)
  - [Jenkins](https://jenkins-ci.org/)
 
 
@@ -23,6 +22,22 @@ These Jenkins ports are exposed:
 
 
 # How to run the container
+
+## Environment variables
+
+When you start the Sonarqube container, you can adjust the configuration by passing one or more environment variables on the `docker run` command line:
+
+### `JAVA_OPTS`
+
+ - The options for the java process to use
+ - Example value: `-Xmx768m`
+ - Default value: ` `
+ 
+### `JENKINS_OPTS`
+
+ - The options for the jenkins app to use
+ - Example value: `--prefix=/jenkins`
+ - Default value: ` ` 
 
 ## Using docker
 
@@ -55,10 +70,6 @@ docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v /opt/jenkins:/opt/je
   ```
 
 ## Advanced topics
-
-### Use your own SSL certificates
-
-See parent image: [chrisipa/tomcat](https://github.com/chrisipa/docker-library/tree/master/debian-pom/java-pom/tomcat-pom/tomcat#use-your-own-ssl-certificates)
 
 ### Accept self signed SSL certificates from Jenkins JRE
 

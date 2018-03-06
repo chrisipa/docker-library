@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # include parent entrypoint script
-source /tomcat-base.sh
+source /jdk-base.sh
