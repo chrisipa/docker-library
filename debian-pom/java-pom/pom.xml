@@ -29,7 +29,7 @@
         <module>jdk</module>
         <module>jmeter-pom</module>
         <module>nexus</module>
-        <module>sonarqube</module>
+        <module>sonarqube-pom</module>
         <module>tomcat-pom</module>
     </modules>
 

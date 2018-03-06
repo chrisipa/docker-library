@@ -11,6 +11,7 @@ This Sonarqube docker image contains the following software components:
 
  - [Oracle JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
  - [Sonarqube](http://www.sonarqube.org/)
+ - [Sonarqube LDAP Plugin](https://docs.sonarqube.org/display/PLUG/LDAP+Plugin)
 
 For data storage you will need a relational database. At the moment, these databases are supported:
 

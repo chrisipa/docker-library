@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>sonarqube-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>sonarqube-mysql</artifactId>
+
+    <packaging>docker</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>mysql:5.6.29</name>
+                            <alias>${project.artifactId}</alias>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <env>
+                                    <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
+                                    <MYSQL_DATABASE>sonarqube</MYSQL_DATABASE>
+                                    <MYSQL_USER>sonarqube</MYSQL_USER>
+                                    <MYSQL_PASSWORD>sonarqube</MYSQL_PASSWORD>
+                                </env>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

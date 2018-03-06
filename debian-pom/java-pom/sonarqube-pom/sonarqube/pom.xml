@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>de.papke.docker</groupId>
-        <artifactId>java-pom</artifactId>
+        <artifactId>sonarqube-pom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
@@ -18,6 +18,8 @@
         <sonarqube.home>${opt.folder.path}/sonarqube</sonarqube.home>
         <sonarqube.version>6.7.2</sonarqube.version>
         <sonarqube.checksum>6efa2551d2c1f26cf40e000522226292</sonarqube.checksum>
+        <sonarqube.ldap.plugin.version>2.2.0.608</sonarqube.ldap.plugin.version>
+        <sonarqube.ldap.plugin.checksum>90da8f56fbbbb3624b8a3f6f1075860a</sonarqube.ldap.plugin.checksum>
     </properties>
 
     <build>
@@ -29,26 +31,6 @@
                 <configuration>
                     <verbose>${verbose}</verbose>
                     <images>
-                        <image>
-                            <name>mysql:5.6.29</name>
-                            <alias>mysql-sonarqube</alias>
-                            <run>
-                                <namingStrategy>alias</namingStrategy>
-                                <volumes>
-                                    <bind>
-                                        <volume>/etc/localtime:/etc/localtime:ro</volume>
-                                        <volume>/etc/timezone:/etc/timezone:ro</volume>
-                                        <volume>${data.folder}/sonarqube/mysql:/var/lib/mysql</volume>
-                                    </bind>
-                                </volumes>
-                                <env>
-                                    <MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
-                                    <MYSQL_DATABASE>sonarqube</MYSQL_DATABASE>
-                                    <MYSQL_USER>sonarqube</MYSQL_USER>
-                                    <MYSQL_PASSWORD>sonarqube</MYSQL_PASSWORD>
-                                </env>
-                            </run>
-                        </image>
                         <image>
                             <name>${registry}/${tenant}/${project.artifactId}</name>
                             <alias>${project.artifactId}</alias>
@@ -87,6 +69,10 @@
                                     <run>rm -f sonarqube-${sonarqube.version}.zip</run>
                                     <run>mv -T ${opt.folder.path}/sonarqube-${sonarqube.version} ${sonarqube.home}</run>
 
+                                    <!-- download sonarqube ldap plugin -->
+                                    <run>wget -q http://sonarsource.bintray.com/Distribution/sonar-ldap-plugin/sonar-ldap-plugin-${sonarqube.ldap.plugin.version}.jar -P ${sonarqube.home}/lib/bundled-plugins</run>
+                                    <run>echo "${sonarqube.ldap.plugin.checksum} ${sonarqube.home}/lib/bundled-plugins/sonar-ldap-plugin-${sonarqube.ldap.plugin.version}.jar" | md5sum -c</run>
+
                                     <!-- remove  unused folders -->
                                     <run>rm -rf ${sonarqube.home}/bin</run>
                                     
@@ -111,18 +97,8 @@
                             </build>
                             <run>
                                 <namingStrategy>alias</namingStrategy>
-                                <volumes>
-                                    <bind>
-                                        <volume>/etc/localtime:/etc/localtime:ro</volume>
-                                        <volume>/etc/timezone:/etc/timezone:ro</volume>
-                                        <volume>${data.folder}/sonarqube/app/conf:${sonarqube.home}/conf</volume>
-                                        <volume>${data.folder}/sonarqube/app/data:${sonarqube.home}/data</volume>
-                                        <volume>${data.folder}/sonarqube/app/extensions:${sonarqube.home}/extensions</volume>
-                                        <volume>${data.folder}/sonarqube/app/logs:${sonarqube.home}/logs</volume>
-                                    </bind>
-                                </volumes>
                                 <links>
-                                    <link>mysql-sonarqube</link>
+                                    <link>sonarqube-mysql</link>
                                 </links>
                                 <ports>
                                     <port>9000:9000</port>
