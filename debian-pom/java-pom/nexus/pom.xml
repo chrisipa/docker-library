@@ -124,13 +124,6 @@
                             </build>
                             <run>
                                 <namingStrategy>alias</namingStrategy>
-                                <volumes>
-                                    <bind>
-                                        <volume>/etc/localtime:/etc/localtime:ro</volume>
-                                        <volume>/etc/timezone:/etc/timezone:ro</volume>
-                                        <volume>${data.folder}/sonatype-work:${sonatype.work}</volume>
-                                    </bind>
-                                </volumes>
                                 <ports>
                                     <port>8081:8081</port>
                                     <port>8082:8082</port>
