@@ -37,6 +37,11 @@ When you start the Nexus container, you can adjust the configuration by passing 
  - The webapp context path as string
  - Default value: `/`
 
+### `NEXUS_SESSION_TIMEOUT`
+
+ - The session timeout of the nexus webapp in milliseconds
+ - Default value: `600000`
+
 ### `SONATYPE_WORK`
 
  - The folder for sonatype working data

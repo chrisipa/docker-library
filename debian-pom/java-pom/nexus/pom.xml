@@ -21,6 +21,7 @@
         <nexus.version>3.8.0-02</nexus.version>
         <nexus.checksum>9543aeb545d621a6fe27b26af3490dfa</nexus.checksum>
         <nexus.context.path>/</nexus.context.path>
+        <nexus.session.timeout>600000</nexus.session.timeout>
         <install4j.add.vm.params>-Xms1200m -Xmx1200m -XX:MaxDirectMemorySize=2g -Djava.util.prefs.userRoot=${nexus.data}/javaprefs</install4j.add.vm.params>
     </properties>
 
@@ -49,6 +50,7 @@
                                     <NEXUS_HOME>${nexus.home}</NEXUS_HOME>
                                     <NEXUS_DATA>${nexus.data}</NEXUS_DATA>
                                     <NEXUS_CONTEXT_PATH>${nexus.context.path}</NEXUS_CONTEXT_PATH>
+                                    <NEXUS_SESSION_TIMEOUT>${nexus.session.timeout}</NEXUS_SESSION_TIMEOUT>
                                     <INSTALL4J_ADD_VM_PARAMS>${install4j.add.vm.params}</INSTALL4J_ADD_VM_PARAMS>
                                 </env>
                                 <optimise>${optimise}</optimise>
@@ -95,6 +97,7 @@
                                     <run>tar -zxf nexus-${nexus.version}-unix.tar.gz -C ${opt.folder.path}</run>
                                     <run>rm -f nexus-${nexus.version}-unix.tar.gz</run>
                                     <run>mv -T ${opt.folder.path}/nexus-${nexus.version} ${nexus.home}</run>
+                                    <run>mv /tmp/nexus-default.properties ${nexus.home}/etc</run>
                                     
                                     <!-- create data folders -->
                                     <run>mkdir -p ${nexus.data}</run>
@@ -112,8 +115,15 @@
                                     <inline>
                                         <fileSets>
                                             <fileSet>
-                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <directory>${project.basedir}/src/main/resources/entrypoint</directory>
                                                 <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/etc</directory>
+                                                <outputDirectory>/tmp</outputDirectory>
                                                 <includes>
                                                     <include>**/*</include>
                                                 </includes>
@@ -130,6 +140,7 @@
                                 </ports>
                                 <env>
                                     <NEXUS_CONTEXT_PATH>/nexus</NEXUS_CONTEXT_PATH>
+                                    <NEXUS_SESSION_TIMEOUT>43200000</NEXUS_SESSION_TIMEOUT>
                                 </env>
                             </run>
                         </image>
