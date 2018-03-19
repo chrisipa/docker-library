@@ -54,9 +54,13 @@
                                     <port>5000</port>
                                 </ports>
                                 <runCmds>
+                                    <!-- add ansible package repository -->
+                                    <run>echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" >> /etc/apt/sources.list</run>
+                                    <run>apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367</run>
+
                                     <!-- install additional packages -->
                                     <run>apt-get update</run>
-                                    <run>apt-get install -y gawk git</run>
+                                    <run>apt-get install -y ansible git</run>
                                     <run>apt-get clean</run>
 
                                     <!-- download and extract jenkins to dist folder -->

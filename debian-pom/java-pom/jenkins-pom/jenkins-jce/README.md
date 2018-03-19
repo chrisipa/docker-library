@@ -9,10 +9,12 @@ Sources to build this docker image can be found [here](https://github.com/chrisi
 # Description
 This Jenkins docker image contains the following software components:
 
- - [Oracle JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
- - [Java Cryptography Extension](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
+ - [Ansible](http://docs.ansible.com/ansible/latest/intro_installation.html)
  - [Apache Maven 3](https://maven.apache.org/download.cgi)
+ - [GIT](https://git-scm.com/downloads)
+ - [Java Cryptography Extension](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
  - [Jenkins](https://jenkins-ci.org/)
+ - [Oracle JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
 
 ## Ports
