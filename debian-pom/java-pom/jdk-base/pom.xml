@@ -84,6 +84,8 @@
                                     <run>update-alternatives --set "java" "${java.home}/bin/java"</run>
                                     <run>update-alternatives --install "/usr/bin/javac" "javac" "${java.home}/bin/javac" 1</run>
                                     <run>update-alternatives --set "javac" "${java.home}/bin/javac"</run>
+                                    <run>update-alternatives --install "/usr/bin/jar" "jar" "${java.home}/bin/jar" 1</run>
+                                    <run>update-alternatives --set "jar" "${java.home}/bin/jar"</run>
                                     <run>update-alternatives --install "/usr/bin/keytool" "keytool" "${java.home}/bin/keytool" 1</run>
                                     <run>update-alternatives --set "keytool" "${java.home}/bin/keytool"</run>
 

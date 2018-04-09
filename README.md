@@ -15,8 +15,8 @@ Here's a list of all docker images sorted by category.
 * [Apache Ant](debian-pom/java-pom/build-tool-pom/ant/README.md)
 * [Apache Maven](debian-pom/java-pom/build-tool-pom/mvn/README.md)
 * [Gradle](debian-pom/java-pom/build-tool-pom/gradle/README.md)
-* [Jenkins](debian-pom/java-pom/tomcat-pom/jenkins-pom/jenkins/README.md)
-* [Jenkins JCE](debian-pom/java-pom/tomcat-pom/jenkins-pom/jenkins-jce/README.md)
+* [Jenkins](debian-pom/java-pom/jenkins-pom/jenkins/README.md)
+* [Jenkins JCE](debian-pom/java-pom/jenkins-pom/jenkins-jce/README.md)
 
 ### Load Test Tools
 

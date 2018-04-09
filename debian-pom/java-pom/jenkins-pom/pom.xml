@@ -15,6 +15,7 @@
         <jenkins.version>2.89.4</jenkins.version>
         <jenkins.home>${opt.folder.path}/jenkins</jenkins.home>
         <jenkins.dist.folder>${opt.folder.path}/jenkins-dist</jenkins.dist.folder>
+        <jenkins.uc>https://updates.jenkins.io</jenkins.uc>
     </properties>
 
     <modules>

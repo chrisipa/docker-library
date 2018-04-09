@@ -38,8 +38,10 @@
                                 <from>${registry}/${tenant}/jdk-base:${jdk.version}</from>
                                 <!-- set environment variables -->
                                 <env>
+                                    <COPY_REFERENCE_FILE_LOG>${jenkins.home}/copy_reference_file.log</COPY_REFERENCE_FILE_LOG>
                                     <JENKINS_HOME>${jenkins.home}</JENKINS_HOME>
                                 	<JENKINS_DIST_FOLDER>${jenkins.dist.folder}</JENKINS_DIST_FOLDER>
+                                	<JENKINS_UC>${jenkins.uc}</JENKINS_UC>
                                     <MAVEN_HOME>${maven.home}</MAVEN_HOME>
                                 </env>
                                 <optimise>${optimise}</optimise>
@@ -69,6 +71,9 @@
                                     <run>mkdir -p ${jenkins.dist.folder}</run>
                                     <run>mv jenkins.war ${jenkins.dist.folder}</run>
 
+                                    <!-- install jenkins plugins -->
+                                    <run>cat $JENKINS_DIST_FOLDER/ref/plugins.txt | install-plugins.sh</run>
+
                                     <!-- download and extract maven to opt folder -->
                                     <run>wget -q http://archive.apache.org/dist/maven/maven-${maven.major.version}/${maven.version}/binaries/apache-maven-${maven.version}-bin.tar.gz</run>
                                     <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
@@ -90,8 +95,22 @@
                                     <inline>
                                         <fileSets>
                                             <fileSet>
-                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <directory>${project.basedir}/src/main/resources/entrypoint</directory>
                                                 <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/plugin</directory>
+                                                <outputDirectory>/usr/local/bin</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/ref</directory>
+                                                <outputDirectory>${jenkins.dist.folder}/ref</outputDirectory>
                                                 <includes>
                                                     <include>**/*</include>
                                                 </includes>
