@@ -4,11 +4,12 @@
 source /jdk-base.sh
 
 # copy reference files
-configFile="$JENKINS_HOME/config.xml" 
-if [ ! -f "$configFile" ]
+initDoneFile="$JENKINS_HOME/init.done" 
+if [ ! -f "$initDoneFile" ]
 then
 	log "INFO" "Copying reference files to jenkins home folder"
 	cp -r $JENKINS_DIST_FOLDER/ref/* $JENKINS_HOME 
+	touch "$initDoneFile"
 fi	
 
 # read JAVA_OPTS into arrays to avoid need for eval (and associated vulnerabilities)
