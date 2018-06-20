@@ -15,13 +15,13 @@
     <packaging>docker</packaging>
 
     <properties>
-        <jdk.build>b12</jdk.build>
-        <jdk.folder.name>jdk1.8.0_162</jdk.folder.name>
+        <jdk.build>b11</jdk.build>
+        <jdk.folder.name>jdk1.8.0_172</jdk.folder.name>
         <jdk.path.version>${jdk.version}-${jdk.build}</jdk.path.version>
-        <jdk.path.id>0da788060d494f5095bf8624735fa2f1</jdk.path.id>
+        <jdk.path.id>a58eab1ec242421181065cdc37240b08</jdk.path.id>
         <jdk.file.name>jdk-${jdk.version}-linux-x64.tar.gz</jdk.file.name>
         <jdk.url>http://download.oracle.com/otn-pub/java/jdk/${jdk.path.version}/${jdk.path.id}/${jdk.file.name}</jdk.url>
-        <jdk.checksum>781e3779f0c134fb548bde8b8e715e90</jdk.checksum>
+        <jdk.checksum>eda2945e8c02b84adbf78f46c37b71c1</jdk.checksum>
     </properties>
 
     <build>

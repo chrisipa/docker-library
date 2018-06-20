@@ -14,7 +14,7 @@
     <properties>
     	<java.home>${opt.folder.path}/java</java.home>
         <jdk.major.version>8</jdk.major.version>
-        <jdk.version>${jdk.major.version}u162</jdk.version>
+        <jdk.version>${jdk.major.version}u172</jdk.version>
         <jre.security.folder>${java.home}/jre/lib/security</jre.security.folder>
         <ssl.trusted.certs.folder>${opt.folder.path}/ssl/trusted</ssl.trusted.certs.folder>
         <maven.major.version>3</maven.major.version>
