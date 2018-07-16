@@ -18,7 +18,9 @@ These Apache HTTPD modules are activated by default:
   - headers 
   - proxy 
   - proxy_ajp
+  - proxy_balancer
   - proxy_http 
+  - proxy_wstunnel
   - rewrite 
   - ssl
 
