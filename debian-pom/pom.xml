@@ -30,6 +30,7 @@
         <module>ab-pom</module>
         <module>apache</module>
         <module>java-pom</module>
+        <module>pen</module>
     </modules>
 
 </project>
