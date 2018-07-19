@@ -14,6 +14,7 @@ This Apache HTTPD docker image contains the following software components:
 ## Modules
 These Apache HTTPD modules are activated by default:
 
+  - authnz_ldap
   - deflate 
   - headers 
   - lbmethod_byrequests
