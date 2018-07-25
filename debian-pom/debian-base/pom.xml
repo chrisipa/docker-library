@@ -41,7 +41,7 @@
                                     <!-- install updates and additional packages and cleanup afterwards -->
                                     <run>apt-get update</run>
                                     <run>apt-get dist-upgrade -y</run>
-                                    <run>apt-get install --no-install-recommends -y ca-certificates curl nano netcat telnet unzip vim wget</run>
+                                    <run>apt-get install --no-install-recommends -y bzip2 ca-certificates curl nano netcat telnet unzip vim wget</run>
                                     <run>apt-get clean</run>
                                     
                                 	<!-- create account for technical user -->
