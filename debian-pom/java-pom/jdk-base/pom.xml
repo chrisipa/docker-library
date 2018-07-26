@@ -48,7 +48,7 @@
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- download and extract jdk to opt folder -->
-                                    <run>wget -q --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" ${jdk.url}</run>
+                                    <run>wget -q ${jdk.url}</run>
                                     <run>echo "${jdk.checksum} ${jdk.file.name}" | md5sum -c</run>
                                     <run>tar -zxf ${jdk.file.name} -C ${opt.folder.path}</run>
                                     <run>mv ${opt.folder.path}/${jdk.folder.name} ${java.home}</run>
