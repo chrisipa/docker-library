@@ -17,7 +17,9 @@
     <properties>
         <jdk.folder.name>jdk1.8.0_172</jdk.folder.name>
         <jdk.file.name>jdk-${jdk.version}-linux-x64.tar.gz</jdk.file.name>
-        <jdk.url>https://papke.it/downloads/jdk/jdk-8u172-linux-x64.tar.gz</jdk.url>
+        <jdk.scheme>https</jdk.scheme>
+        <jdk.host>papke.it</jdk.host>
+        <jdk.url>${jdk.scheme}://${jdk.host}/downloads/jdk/jdk-8u172-linux-x64.tar.gz</jdk.url>
         <jdk.checksum>eda2945e8c02b84adbf78f46c37b71c1</jdk.checksum>
     </properties>
 
