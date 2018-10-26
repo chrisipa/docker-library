@@ -120,7 +120,7 @@ Options:
   -p <project-list>     Build comma separated maven project list
   -s                    Create docker containers from images and start them
   -t <tag>              Build with specified image tag
-  -v					Verbose logging of errors (optimise flag false)
+  -v                    Verbose logging of errors (optimise flag false)
 
 Examples:
   $0                                     Build all docker images
