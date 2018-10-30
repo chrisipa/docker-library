@@ -1,0 +1,1 @@
+Ubuntu docker image based on Ubuntu Bionic with useful debugging tools preinstalled.
