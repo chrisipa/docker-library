@@ -17,6 +17,7 @@
 
     <modules>
         <module>ubuntu-base</module>
+        <module>apache</module>
         <module>ubuntu</module>
     </modules>
 
