@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>ubuntu-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ubuntu-base</artifactId>
+
+    <packaging>docker</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${ubuntu.version}</tag>
+                                </tags>
+                                <from>ubuntu:${ubuntu.version}</from>
+                                <env>
+                                    <LANG>C.UTF-8</LANG>
+                                    <TERM>xterm</TERM>
+                                    <SHELL>/bin/bash</SHELL>
+                                </env>
+                                <optimise>${optimise}</optimise>
+                                <runCmds>
+                                    <!-- install updates and additional packages and cleanup afterwards -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get dist-upgrade -y</run>
+                                    <run>apt-get install --no-install-recommends -y bzip2 ca-certificates curl nano netcat telnet unzip vim wget</run>
+                                    <run>apt-get clean</run>
+                                    
+                                	<!-- create account for technical user -->
+                                	<run>groupadd -g ${gid} ${group}</run>
+                                	<run>useradd -u ${uid} -g ${gid} -m -s /bin/bash ${user}</run>       
+                                	
+                                    <!-- add color options to .bashrc file -->
+                                    <run>echo 'export LS_OPTIONS="--color=auto"' >> ${bash.rc.file.root}</run>
+                                    <run>echo 'eval "`dircolors`"' >> ${bash.rc.file.root}</run>
+
+                                    <!-- add aliases to .bashrc file -->
+                                    <run>echo 'alias ls="ls $LS_OPTIONS"' >> ${bash.rc.file.root}</run>
+                                    <run>echo 'alias l="ls -altrh"' >> ${bash.rc.file.root}</run>
+                                    <run>echo 'alias ..="cd .."' >> ${bash.rc.file.root}</run>
+
+                                    <!-- enable history search in inputrc file -->
+                                    <run>echo '"\e[5~": history-search-backward' >> ${input.rc.file}</run>
+                                    <run>echo '"\e[6~": history-search-forward' >> ${input.rc.file}</run>
+
+									<!-- copy .bashrc file from root home to user home -->
+									<run>cp ${bash.rc.file.root} ${bash.rc.file.user}</run>
+                                </runCmds>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/${project.artifactId}.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <cmd>bash</cmd>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <id>entrypoint-script</id>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                    <skipRun>true</skipRun>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -13,10 +13,20 @@
         <image.tag>latest</image.tag>
         <registry>docker.io</registry>
         <tenant>chrisipa</tenant>
+        <opt.folder.path>/opt</opt.folder.path>
+        <data.folder>${opt.folder.path}/docker</data.folder>
+		<uid>1001</uid>
+    	<gid>1001</gid>
+    	<user>${tenant}</user>
+    	<group>${tenant}</group>       
+    	<bash.rc.file.root>/root/.bashrc</bash.rc.file.root>
+    	<bash.rc.file.user>/home/${user}/.bashrc</bash.rc.file.user>  
+    	<input.rc.file>/etc/inputrc</input.rc.file>  
     </properties>
-
+    
     <modules>
         <module>debian-pom</module>
+        <module>ubuntu-pom</module>
     </modules>
 
     <build>

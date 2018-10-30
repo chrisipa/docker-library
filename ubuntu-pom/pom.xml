@@ -7,21 +7,17 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>debian-pom</artifactId>
+    <artifactId>ubuntu-pom</artifactId>
 
     <packaging>pom</packaging>
 
     <properties>
-        <debian.version>8</debian.version>
+        <ubuntu.version>18.04</ubuntu.version>
     </properties>
 
     <modules>
-        <module>debian-base</module>
-        <module>debian</module>
-        <module>ab-pom</module>
-        <module>apache</module>
-        <module>java-pom</module>
-        <module>pen</module>
+        <module>ubuntu-base</module>
+        <module>ubuntu</module>
     </modules>
 
 </project>
