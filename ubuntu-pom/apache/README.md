@@ -1,10 +1,10 @@
 Apache HTTPD
 ==============
 
-Apache HTTPD docker image based on Debian Jessie.
+Apache HTTPD docker image based on Ubuntu Bionic.
 
 # Source Code
-Sources to build this docker image can be found [here](https://github.com/chrisipa/docker-library/tree/master/debian-pom/apache).
+Sources to build this docker image can be found [here](https://github.com/chrisipa/docker-library/tree/master/ubuntu-pom/apache).
 
 # Description
 This Apache HTTPD docker image contains the following software components:
@@ -21,7 +21,8 @@ These Apache HTTPD modules are activated by default:
   - proxy 
   - proxy_ajp
   - proxy_balancer
-  - proxy_http 
+  - proxy_http
+  - proxy_hcheck 
   - proxy_wstunnel
   - rewrite 
   - ssl
@@ -72,7 +73,7 @@ docker run -d --name apache -p 80:80 -p 443:443 -v /var/www/html:/var/www/html c
 
 ## Advanced topics
 
-### Use your own SSL certificates
+### Create your own self signed SSL certificates
 
 1. Create CA Certificate:
     ```

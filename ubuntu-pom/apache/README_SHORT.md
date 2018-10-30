@@ -1,1 +1,1 @@
-Apache HTTPD docker image based on Debian Jessie.
+Apache HTTPD docker image based on Ubuntu Bionic.
