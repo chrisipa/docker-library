@@ -40,7 +40,7 @@
                                 </entryPoint>
                                 <runCmds>
                                     <!-- download zip file with java cryptography extension and unzip to jre security folder -->
-                                    <run>wget -q --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip</run>
+                                    <run>wget -q --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" ${download.url.prefix}/jdk/jce_policy-8.zip</run>
                                     <run>unzip -q jce_policy-8.zip</run>
                                     <run>cp UnlimitedJCEPolicyJDK8/*.jar ${jre.security.folder}</run>
                                     <run>rm -rf ${jre.security.folder}/policy</run>

@@ -14,10 +14,6 @@
 
     <packaging>docker</packaging>
     
-    <properties>
-    	<jenkins.checksum>86a2e7aaded0e65b46cc544f379f9ff9</jenkins.checksum>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -66,7 +62,7 @@
                                     <run>apt-get clean</run>
 
                                     <!-- download and extract jenkins to dist folder -->
-                                    <run>wget -q http://mirrors.jenkins.io/war-stable/${jenkins.version}/jenkins.war</run>
+                                    <run>wget -q ${download.url.prefix}/jenkins/${jenkins.version}/jenkins.war</run>
                                     <run>echo "${jenkins.checksum} jenkins.war" | md5sum -c</run>
                                     <run>mkdir -p ${jenkins.dist.folder}</run>
                                     <run>mv jenkins.war ${jenkins.dist.folder}</run>
@@ -75,7 +71,7 @@
                                     <run>cat $JENKINS_DIST_FOLDER/ref/plugins.txt | install-plugins.sh</run>
 
                                     <!-- download and extract maven to opt folder -->
-                                    <run>wget -q http://archive.apache.org/dist/maven/maven-${maven.major.version}/${maven.version}/binaries/apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>wget -q ${download.url.prefix}/mvn/apache-maven-${maven.version}-bin.tar.gz</run>
                                     <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
                                     <run>tar -zxf apache-maven-${maven.version}-bin.tar.gz -C ${opt.folder.path}</run>
                                     <run>rm -f apache-maven-${maven.version}-bin.tar.gz</run>

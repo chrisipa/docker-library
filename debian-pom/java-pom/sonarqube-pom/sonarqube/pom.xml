@@ -63,14 +63,14 @@
                                 </ports>
                                 <runCmds>
                                     <!-- download and extract sonarqube to opt folder -->
-                                    <run>wget -q http://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-${sonarqube.version}.zip</run>
+                                    <run>wget -q ${download.url.prefix}/sonarqube/sonarqube-${sonarqube.version}.zip</run>
                                     <run>echo "${sonarqube.checksum} sonarqube-${sonarqube.version}.zip" | md5sum -c</run>
                                     <run>unzip -q sonarqube-${sonarqube.version}.zip -d ${opt.folder.path}</run>
                                     <run>rm -f sonarqube-${sonarqube.version}.zip</run>
                                     <run>mv -T ${opt.folder.path}/sonarqube-${sonarqube.version} ${sonarqube.home}</run>
 
                                     <!-- download sonarqube ldap plugin -->
-                                    <run>wget -q http://sonarsource.bintray.com/Distribution/sonar-ldap-plugin/sonar-ldap-plugin-${sonarqube.ldap.plugin.version}.jar -P ${sonarqube.home}/lib/bundled-plugins</run>
+                                    <run>wget -q ${download.url.prefix}/sonarqube/sonar-ldap-plugin-${sonarqube.ldap.plugin.version}.jar -P ${sonarqube.home}/lib/bundled-plugins</run>
                                     <run>echo "${sonarqube.ldap.plugin.checksum} ${sonarqube.home}/lib/bundled-plugins/sonar-ldap-plugin-${sonarqube.ldap.plugin.version}.jar" | md5sum -c</run>
 
                                     <!-- remove  unused folders -->

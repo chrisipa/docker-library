@@ -44,7 +44,7 @@
                                 </entryPoint>
                                 <runCmds>
                                     <!-- download and extract maven to opt folder -->
-                                    <run>wget -q http://archive.apache.org/dist/maven/maven-${maven.major.version}/${maven.version}/binaries/apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>wget -q ${download.url.prefix}/mvn/apache-maven-${maven.version}-bin.tar.gz</run>
                                     <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
                                     <run>tar -zxf apache-maven-${maven.version}-bin.tar.gz -C ${opt.folder.path}</run>
                                     <run>rm -f apache-maven-${maven.version}-bin.tar.gz</run>

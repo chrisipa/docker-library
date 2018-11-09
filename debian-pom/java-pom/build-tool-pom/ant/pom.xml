@@ -51,7 +51,7 @@
                                 </entryPoint>
                                 <runCmds>
                                     <!-- download and extract ant to opt folder -->
-                                    <run>wget -q http://archive.apache.org/dist/ant/binaries/apache-ant-${ant.version}-bin.tar.gz</run>
+                                    <run>wget -q ${download.url.prefix}/ant/apache-ant-${ant.version}-bin.tar.gz</run>
                                     <run>echo "${ant.checksum} apache-ant-${ant.version}-bin.tar.gz" | md5sum -c</run>
                                     <run>tar -zxf apache-ant-${ant.version}-bin.tar.gz -C ${opt.folder.path}</run>
                                     <run>rm -f apache-ant-${ant.version}-bin.tar.gz</run>

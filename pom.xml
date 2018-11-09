@@ -22,6 +22,7 @@
     	<bash.rc.file.root>/root/.bashrc</bash.rc.file.root>
     	<bash.rc.file.user>/home/${user}/.bashrc</bash.rc.file.user>  
     	<input.rc.file>/etc/inputrc</input.rc.file>  
+    	<download.url.prefix>https://papke.it/downloads</download.url.prefix>
     </properties>
     
     <modules>

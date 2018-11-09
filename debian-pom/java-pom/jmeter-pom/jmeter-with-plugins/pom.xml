@@ -41,13 +41,13 @@
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- download and extract standard plugins -->
-                                    <run>wget -q http://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-${jmeter.standard.plugin.version}.zip</run>
+                                    <run>wget -q ${download.url.prefix}/jmeter/JMeterPlugins-Standard-${jmeter.standard.plugin.version}.zip</run>
                                     <run>echo "${jmeter.standard.plugin.checksum} JMeterPlugins-Standard-${jmeter.standard.plugin.version}.zip" | md5sum -c</run>
                                     <run>unzip -q -o JMeterPlugins-Standard-${jmeter.standard.plugin.version}.zip -d ${jmeter.home}</run>
                                     <run>rm -f JMeterPlugins-Standard-${jmeter.standard.plugin.version}.zip</run>
 
                                     <!-- download and extract extras plugins -->
-                                    <run>wget -q http://jmeter-plugins.org/downloads/file/JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip</run>
+                                    <run>wget -q ${download.url.prefix}/jmeter/JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip</run>
                                     <run>echo "${jmeter.extras.plugin.checksum} JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip" | md5sum -c</run>
                                     <run>unzip -q -o JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip -d ${jmeter.home}</run>
                                     <run>rm -f JMeterPlugins-Extras-${jmeter.extras.plugin.version}.zip</run>
