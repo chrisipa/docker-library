@@ -49,7 +49,7 @@
                                 </entryPoint>
                                 <runCmds>
                                     <!-- download and extract jmeter to opt folder -->
-                                    <run>wget -q ${download.url.prefix}/jmeter/apache-jmeter-${jmeter.version}.tgz</run>
+                                    <run>wget -q --no-check-certificate ${download.url.prefix}/jmeter/apache-jmeter-${jmeter.version}.tgz</run>
                                     <run>echo "${jmeter.checksum} apache-jmeter-${jmeter.version}.tgz" | md5sum -c</run>
                                     <run>tar -zxf apache-jmeter-${jmeter.version}.tgz -C ${opt.folder.path}</run>
                                     <run>mv ${opt.folder.path}/apache-jmeter-${jmeter.version} ${jmeter.home}</run>

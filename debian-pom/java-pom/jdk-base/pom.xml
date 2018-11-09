@@ -17,9 +17,6 @@
     <properties>
         <jdk.folder.name>jdk1.8.0_172</jdk.folder.name>
         <jdk.file.name>jdk-${jdk.version}-linux-x64.tar.gz</jdk.file.name>
-        <jdk.scheme>https</jdk.scheme>
-        <jdk.host>papke.it</jdk.host>
-        <jdk.url>${jdk.scheme}://${jdk.host}/downloads/jdk/jdk-8u172-linux-x64.tar.gz</jdk.url>
         <jdk.checksum>eda2945e8c02b84adbf78f46c37b71c1</jdk.checksum>
     </properties>
 
@@ -50,7 +47,7 @@
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- download and extract jdk to opt folder -->
-                                    <run>wget -q --no-check-certificate ${jdk.url}</run>
+                                    <run>wget -q --no-check-certificate ${download.url.prefix}/jdk/${jdk.file.name}</run>
                                     <run>echo "${jdk.checksum} ${jdk.file.name}" | md5sum -c</run>
                                     <run>tar -zxf ${jdk.file.name} -C ${opt.folder.path}</run>
                                     <run>mv ${opt.folder.path}/${jdk.folder.name} ${java.home}</run>

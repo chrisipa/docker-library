@@ -81,7 +81,7 @@
                                     <run>apt-get clean</run>
 
                                     <!-- download and extract maven to opt folder -->
-                                    <run>wget -q ${download.url.prefix}/mvn/apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>wget -q --no-check-certificate ${download.url.prefix}/mvn/apache-maven-${maven.version}-bin.tar.gz</run>
                                     <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
                                     <run>tar -zxf apache-maven-${maven.version}-bin.tar.gz -C ${opt.folder.path}</run>
                                     <run>rm -f apache-maven-${maven.version}-bin.tar.gz</run>
@@ -92,7 +92,7 @@
                                     <run>update-alternatives --set "mvn" "${maven.home}/bin/mvn"</run>
 
                                     <!-- download and extract nexus to opt folder -->                                  
-                                    <run>wget -q ${download.url.prefix}/nexus/nexus-${nexus.version}-unix.tar.gz</run>
+                                    <run>wget -q --no-check-certificate ${download.url.prefix}/nexus/nexus-${nexus.version}-unix.tar.gz</run>
                                     <run>echo "${nexus.checksum} nexus-${nexus.version}-unix.tar.gz" | md5sum -c</run>
                                     <run>tar -zxf nexus-${nexus.version}-unix.tar.gz -C ${opt.folder.path}</run>
                                     <run>rm -f nexus-${nexus.version}-unix.tar.gz</run>

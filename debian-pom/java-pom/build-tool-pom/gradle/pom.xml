@@ -51,7 +51,7 @@
                                 </entryPoint>
                                 <runCmds>
                                     <!-- download and extract gradle to opt folder -->
-                                    <run>wget -q ${download.url.prefix}/gradle/gradle-${gradle.version}-bin.zip</run>
+                                    <run>wget -q --no-check-certificate ${download.url.prefix}/gradle/gradle-${gradle.version}-bin.zip</run>
                                     <run>echo "${gradle.checksum} gradle-${gradle.version}-bin.zip" | md5sum -c</run>
                                     <run>unzip -q gradle-${gradle.version}-bin.zip -d ${opt.folder.path}</run>
                                     <run>rm -f gradle-${gradle.version}-bin.zip</run>

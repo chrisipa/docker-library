@@ -33,7 +33,7 @@
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- download multi url ab binary -->
-                                    <run>wget -q -O /usr/bin/ab ${download.url.prefix}/apache-bench/multi-url/ab</run>
+                                    <run>wget -q --no-check-certificate -O /usr/bin/ab ${download.url.prefix}/apache-bench/multi-url/ab</run>
                                     <run>chmod +x /usr/bin/ab</run>
                                 </runCmds>
                                 <entryPoint>
