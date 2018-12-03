@@ -14,6 +14,7 @@ matrix-auth:latest
 pam-auth:latest
 pipeline-github-lib:latest
 pipeline-stage-view:latest
+role-strategy:latest
 ssh-slaves:latest
 stashNotifier:latest
 subversion:latest
