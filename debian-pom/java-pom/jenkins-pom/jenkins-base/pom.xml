@@ -51,6 +51,11 @@
                                     <port>50000</port>
                                 </ports>
                                 <runCmds>
+                                    <!-- install git package -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get install -y git</run>
+                                    <run>apt-get clean</run>                                
+                                
                                     <!-- download and extract jenkins to dist folder -->
                                     <run>wget -q --no-check-certificate ${download.url.prefix}/jenkins/${jenkins.version}/jenkins.war</run>
                                     <run>echo "${jenkins.checksum} jenkins.war" | md5sum -c</run>
