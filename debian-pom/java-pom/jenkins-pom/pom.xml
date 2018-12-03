@@ -23,6 +23,7 @@
     	<module>jenkins-base</module>
         <module>jenkins</module>
         <module>jenkins-jce</module>
+        <module>jenkins-standalone</module>
     </modules>
 
 </project>

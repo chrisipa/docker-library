@@ -10,7 +10,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jenkins-jce</artifactId>
+    <artifactId>jenkins-standalone</artifactId>
 
     <packaging>docker</packaging>
 
@@ -32,6 +32,10 @@
                                     <tag>${jenkins.version}</tag>
                                 </tags>
                                 <from>${registry}/${tenant}/jenkins-base:${jenkins.version}</from>
+                                <!-- set environment variables -->
+                                <env>
+                                	<MAVEN_HOME>${maven.home}</MAVEN_HOME>
+                                </env>
                                 <optimise>${optimise}</optimise>
                                 <entryPoint>
                                     <exec>
@@ -39,16 +43,29 @@
                                     </exec>
                                 </entryPoint>
                                 <runCmds>
-                                    <!-- download zip file with java cryptography extension and unzip to jre security folder -->
-                                    <run>wget -q --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" ${download.url.prefix}/jdk/jce_policy-8.zip</run>
-                                    <run>unzip -q jce_policy-8.zip</run>
-                                    <run>cp UnlimitedJCEPolicyJDK8/*.jar ${jre.security.folder}</run>
-                                    <run>rm -rf ${jre.security.folder}/policy</run>
-                                    <run>rm -f jce_policy-8.zip</run>
-                                    <run>rm -rf UnlimitedJCEPolicyJDK8</run>
+                                
+									<!-- add ansible package repository -->
+                                    <run>echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" >> /etc/apt/sources.list</run>
+                                    <run>apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367</run>
+
+									<!-- install ansible package -->
+									<run>apt-get update</run>
+                                    <run>apt-get install -y ansible</run>
+                                    <run>apt-get clean</run>        
+                                    
+                                    <!-- download and extract maven to opt folder -->
+                                    <run>wget -q --no-check-certificate ${download.url.prefix}/mvn/apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>echo "${maven.checksum} apache-maven-${maven.version}-bin.tar.gz" | md5sum -c</run>
+                                    <run>tar -zxf apache-maven-${maven.version}-bin.tar.gz -C ${opt.folder.path}</run>
+                                    <run>rm -f apache-maven-${maven.version}-bin.tar.gz</run>
+                                    <run>mv -T ${opt.folder.path}/apache-maven-${maven.version} ${maven.home}</run>     
+                                    
+                                    <!-- add maven executable to path -->
+                                    <run>update-alternatives --install "/usr/bin/mvn" "mvn" "${maven.home}/bin/mvn" 1</run>
+                                    <run>update-alternatives --set "mvn" "${maven.home}/bin/mvn"</run>
                                     
                                     <!-- change permissions -->
-                                    <run>chown -R ${user}.${group} ${java.home}</run>
+                                    <run>chown -R ${user}.${group} ${maven.home}</run>
                                 </runCmds>
                                 
                                 <user>${user}</user>
