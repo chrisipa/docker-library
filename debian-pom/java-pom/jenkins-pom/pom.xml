@@ -12,8 +12,8 @@
     <packaging>pom</packaging>
 
     <properties>
-        <jenkins.version>2.89.4</jenkins.version>
-        <jenkins.checksum>86a2e7aaded0e65b46cc544f379f9ff9</jenkins.checksum>
+        <jenkins.version>2.138.3</jenkins.version>
+        <jenkins.checksum>17731db61b1cde10a8ef63e4ed10ee09</jenkins.checksum>
         <jenkins.home>${opt.folder.path}/jenkins</jenkins.home>
         <jenkins.dist.folder>${opt.folder.path}/jenkins-dist</jenkins.dist.folder>
         <jenkins.uc>https://updates.jenkins.io</jenkins.uc>
