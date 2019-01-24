@@ -48,10 +48,14 @@
                                     <run>echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" >> /etc/apt/sources.list</run>
                                     <run>apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367</run>
 
-									<!-- install ansible package -->
+                                    <!-- add atlassian sdk package repository -->
+                                    <run>echo "deb https://packages.atlassian.com/atlassian-sdk-deb stable contrib" >>/etc/apt/sources.list</run>
+                                    <run>curl -s https://packages.atlassian.com/api/gpg/key/public | apt-key add -</run>
+                                    
+									<!-- install additional packages -->
 									<run>apt-get update</run>
-                                    <run>apt-get install -y ansible</run>
-                                    <run>apt-get clean</run>        
+                                    <run>apt-get install -y ansible atlassian-plugin-sdk</run>
+                                    <run>apt-get clean</run>
                                     
                                     <!-- download and extract maven to opt folder -->
                                     <run>wget -q --no-check-certificate ${download.url.prefix}/mvn/apache-maven-${maven.version}-bin.tar.gz</run>
