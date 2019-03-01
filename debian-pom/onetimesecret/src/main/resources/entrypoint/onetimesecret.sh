@@ -27,7 +27,7 @@ fi
 # set default for ots redis url
 if [ -z "$OTS_REDIS_URI" ]
 then
-    OTS_REDIS_URI="'redis://user:CHANGEME@127.0.0.1:7179/0?timeout=10&thread_safe=false&logging=false'"
+    OTS_REDIS_URI="redis://user:CHANGEME@127.0.0.1:7179/0?timeout=10&thread_safe=false&logging=false"
 fi
 
 # set default for ots email admin
@@ -57,7 +57,7 @@ fi
 # set default for ots smtp port
 if [ -z "$OTS_SMTP_PORT" ]
 then
-    OTS_SMTP_PORT="587"
+    OTS_SMTP_PORT="25"
 fi
 
 # set default for ots smtp tls
@@ -84,6 +84,30 @@ then
     OTS_SMTP_AUTH=""
 fi
 
+# set default for ots incoming enabled
+if [ -z "$OTS_INCOMING_ENABLED" ]
+then
+    OTS_INCOMING_ENABLED="false"
+fi
+
+# set default for ots incoming email
+if [ -z "$OTS_INCOMING_EMAIL" ]
+then
+    OTS_INCOMING_EMAIL="example@onetimesecret.com"
+fi
+
+# set default for ots incoming passphrase
+if [ -z "$OTS_INCOMING_PASSPHRASE" ]
+then
+    OTS_INCOMING_PASSPHRASE="CHANGEME"
+fi
+
+# set default for ots incoming regex
+if [ -z "$OTS_INCOMING_REGEX" ]
+then
+    OTS_INCOMING_REGEX="\\A[a-zA-Z0-9]{6}\\z"
+fi
+
 # set default for ots stathat enabled
 if [ -z "$OTS_STATHAT_ENABLED" ]
 then
@@ -100,6 +124,18 @@ fi
 if [ -z "$OTS_STATHAT_DEFAULT_CHART" ]
 then
     OTS_STATHAT_DEFAULT_CHART="CHANGEME"
+fi
+
+# set default for ots text nonpaid recipient
+if [ -z "$OTS_TEXT_NONPAID_RECIPIENT" ]
+then
+    OTS_TEXT_NONPAID_RECIPIENT="You need to create an account!"
+fi
+
+# set default for ots text paid recipient
+if [ -z "$OTS_TEXT_PAID_RECIPIENT" ]
+then
+    OTS_TEXT_PAID_RECIPIENT="Send the secret link via email"
 fi
 
 # set default for ots limits create secret
@@ -189,9 +225,15 @@ sed -i "s|{OTS_SMTP_TLS}|$OTS_SMTP_TLS|g" /etc/onetime/config
 sed -i "s|{OTS_SMTP_USER}|$OTS_SMTP_USER|g" /etc/onetime/config
 sed -i "s|{OTS_SMTP_PASS}|$OTS_SMTP_PASS|g" /etc/onetime/config
 sed -i "s|{OTS_SMTP_AUTH}|$OTS_SMTP_AUTH|g" /etc/onetime/config
+sed -i "s|{OTS_INCOMING_ENABLED}|$OTS_INCOMING_ENABLED|g" /etc/onetime/config
+sed -i "s|{OTS_INCOMING_EMAIL}|$OTS_INCOMING_EMAIL|g" /etc/onetime/config
+sed -i "s|{OTS_INCOMING_PASSPHRASE}|$OTS_INCOMING_PASSPHRASE|g" /etc/onetime/config
+sed -i "s|{OTS_INCOMING_REGEX}|$OTS_INCOMING_REGEX|g" /etc/onetime/config
 sed -i "s|{OTS_STATHAT_ENABLED}|$OTS_STATHAT_ENABLED|g" /etc/onetime/config
 sed -i "s|{OTS_STATHAT_API_KEY}|$OTS_STATHAT_API_KEY|g" /etc/onetime/config
 sed -i "s|{OTS_STATHAT_DEFAULT_CHART}|$OTS_STATHAT_DEFAULT_CHART|g" /etc/onetime/config
+sed -i "s|{OTS_TEXT_NONPAID_RECIPIENT}|$OTS_TEXT_NONPAID_RECIPIENT|g" /etc/onetime/config
+sed -i "s|{OTS_TEXT_PAID_RECIPIENT}|$OTS_TEXT_PAID_RECIPIENT|g" /etc/onetime/config
 sed -i "s|{OTS_LIMITS_CREATE_SECRET}|$OTS_LIMITS_CREATE_SECRET|g" /etc/onetime/config
 sed -i "s|{OTS_LIMITS_CREATE_ACCOUNT}|$OTS_LIMITS_CREATE_ACCOUNT|g" /etc/onetime/config
 sed -i "s|{OTS_LIMITS_UPDATE_ACCOUNT}|$OTS_LIMITS_UPDATE_ACCOUNT|g" /etc/onetime/config
@@ -206,4 +248,4 @@ sed -i "s|{OTS_LIMITS_SHOW_SECRET}|$OTS_LIMITS_SHOW_SECRET|g" /etc/onetime/confi
 sed -i "s|{OTS_LIMITS_BURN_SECRET}|$OTS_LIMITS_BURN_SECRET|g" /etc/onetime/config
 
 # start onetimesecret 
-cd /var/lib/onetime && bundle exec thin -e dev -R config.ru -p $OTS_PORT start
+cd /var/lib/onetime && bundle exec thin -e dev -R config.ru -p $OTS_SITE_PORT start

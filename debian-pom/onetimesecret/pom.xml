@@ -15,7 +15,7 @@
     <packaging>docker</packaging>
 
     <properties>
-        <ots.port>7143</ots.port>
+        <ots.site.port>7143</ots.site.port>
     </properties>
 
     <build>
@@ -36,7 +36,7 @@
                                 <from>${registry}/${tenant}/debian-base:${debian.version}</from>
                                 <optimise>${optimise}</optimise>
                                 <env>
-                                    <OTS_PORT>${ots.port}</OTS_PORT>
+                                    <OTS_SITE_PORT>${ots.site.port}</OTS_SITE_PORT>
                                 </env>
                                 <runCmds>
                                     <!-- install additional packages -->

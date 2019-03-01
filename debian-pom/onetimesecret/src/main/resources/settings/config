@@ -31,10 +31,10 @@
 # The regex used to ensure the ticket number is valid.
 # See: https://onetimesecret.com/incoming
 :incoming:
-  :enabled: false
-  :email: example@onetimesecret.com
-  :passphrase: CHANGEME
-  :regex: \A[a-zA-Z0-9]{6}\z
+  :enabled: {OTS_INCOMING_ENABLED}
+  :email: {OTS_INCOMING_EMAIL}
+  :passphrase: {OTS_INCOMING_PASSPHRASE}
+  :regex: {OTS_INCOMING_REGEX}
 
 :locales:
   - en
@@ -61,8 +61,8 @@
   :default_chart: {OTS_STATHAT_DEFAULT_CHART}
 
 :text:
-  :nonpaid_recipient_text: 'You need to create an account!'
-  :paid_recipient_text: 'Send the secret link via email'
+  :nonpaid_recipient_text: {OTS_TEXT_NONPAID_RECIPIENT}
+  :paid_recipient_text: {OTS_TEXT_PAID_RECIPIENT}
 
 :limits:
   :create_secret: {OTS_LIMITS_CREATE_SECRET}
