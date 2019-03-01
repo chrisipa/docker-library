@@ -4,12 +4,12 @@
 source /jdk-base.sh
 
 # set defaults for database
-if [ -z $DB_TYPE ] ; then export DB_TYPE="mysql" ; fi
-if [ -z $DB_HOST ] ; then export DB_HOST="$(getDbEnvVar 'PORT_3306_TCP_ADDR')" ; fi
-if [ -z $DB_PORT ] ; then export DB_PORT="$(getDbEnvVar 'PORT_3306_TCP_PORT')" ; fi
-if [ -z $DB_NAME ] ; then export DB_NAME="$(getDbEnvVar 'MYSQL_DATABASE')" ; fi
-if [ -z $DB_USER ] ; then export DB_USER="$(getDbEnvVar 'MYSQL_USER')" ; fi
-if [ -z $DB_PASS ] ; then export DB_PASS="$(getDbEnvVar 'MYSQL_PASSWORD')" ; fi
+if [ -z "$DB_TYPE" ] ; then export DB_TYPE="mysql" ; fi
+if [ -z "$DB_HOST" ] ; then export DB_HOST="$(getDbEnvVar 'PORT_3306_TCP_ADDR')" ; fi
+if [ -z "$DB_PORT" ] ; then export DB_PORT="$(getDbEnvVar 'PORT_3306_TCP_PORT')" ; fi
+if [ -z "$DB_NAME" ] ; then export DB_NAME="$(getDbEnvVar 'MYSQL_DATABASE')" ; fi
+if [ -z "$DB_USER" ] ; then export DB_USER="$(getDbEnvVar 'MYSQL_USER')" ; fi
+if [ -z "$DB_PASS" ] ; then export DB_PASS="$(getDbEnvVar 'MYSQL_PASSWORD')" ; fi
 
 # set db dialect and db driver class name by db type
 case "$DB_TYPE" in
