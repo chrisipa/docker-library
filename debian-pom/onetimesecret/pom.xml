@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>debian-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>onetimesecret</artifactId>
+
+    <packaging>docker</packaging>
+
+    <properties>
+        <ots.port>7143</ots.port>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                </tags>
+                                <from>${registry}/${tenant}/debian-base:${debian.version}</from>
+                                <optimise>${optimise}</optimise>
+                                <env>
+                                    <OTS_PORT>${ots.port}</OTS_PORT>
+                                </env>
+                                <runCmds>
+                                    <!-- install additional packages -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get install -y build-essential ruby ruby-dev bundler</run>
+                                    <run>apt-get clean</run>
+
+                                    <!-- create ots folders -->
+                                    <run>mkdir -p /etc/onetime /var/log/onetime /var/run/onetime /var/lib/onetime</run>
+                                    
+                                    <!-- download and extract ots -->
+                                    <run>wget -q --no-check-certificate -O /tmp/ots.tar.gz https://codeload.github.com/onetimesecret/onetimesecret/legacy.tar.gz/master</run>
+                                    <run>tar xzf /tmp/ots.tar.gz -C /var/lib/onetime --strip-components=1</run>
+                                    <run>rm /tmp/ots.tar.gz</run>
+
+                                    <!-- install ots dependencies -->
+                                    <run>cd /var/lib/onetime</run>
+                                    <run>bundle install --frozen --deployment --without=dev --gemfile /var/lib/onetime/Gemfile</run>
+                                    
+                                    <!-- copy config files -->
+                                    <run>cp -R etc/* /etc/onetime</run>
+                                    <run>mv /tmp/config /etc/onetime</run>
+
+                                    <!-- change ots folder permissions -->
+                                    <run>chown -R ${user}.${group} /etc/onetime /var/log/onetime /var/run/onetime /var/lib/onetime</run>
+                                </runCmds>
+                                <user>${user}</user>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/${project.artifactId}.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <ports>
+                                    <port>${ots.port}</port>
+                                </ports>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/settings</directory>
+                                                <outputDirectory>/tmp</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources/entrypoint</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                    <skipRun>true</skipRun>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

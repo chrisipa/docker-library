@@ -1,0 +1,79 @@
+:site:
+  :host: {OTS_SITE_HOST}
+  :domain: {OTS_SITE_DOMAIN}
+  :ssl: {OTS_SITE_SSL}
+  # NOTE Once the secret is set, do not change it (keep a backup offsite)
+  :secret: {OTS_SITE_SECRET}
+
+:redis:
+  :uri: {OTS_REDIS_URI}
+  :config: /etc/onetime/redis.conf
+
+:colonels:
+  # Accounts created with the following email addresses
+  # are automatically considered admins of the system.
+  - {OTS_EMAIL_ADMIN}
+
+# Use the following email config to enable SMTP
+:emailer:
+  :mode: {OTS_SMTP_MODE}
+  :from: {OTS_SMTP_FROM}
+  :host: {OTS_SMTP_HOST}
+  :port: {OTS_SMTP_PORT}
+  :tls: {OTS_SMTP_TLS}
+  :user: {OTS_SMTP_USER}
+  :pass: {OTS_SMTP_PASS}
+  :auth: {OTS_SMTP_AUTH}
+
+# Intended for use by IT support teams who need someone to send them
+# sensitive info. The email address is where the secret
+# link is sent. Passphrase is used to protect the secret.
+# The regex used to ensure the ticket number is valid.
+# See: https://onetimesecret.com/incoming
+:incoming:
+  :enabled: false
+  :email: example@onetimesecret.com
+  :passphrase: CHANGEME
+  :regex: \A[a-zA-Z0-9]{6}\z
+
+:locales:
+  - en
+  - es
+  - de
+  - nl
+  - ru
+  - cs
+  - fr
+  - bg
+  - tr
+  - ca_ES
+  - pt_BR
+  - pl
+  - it_IT
+  - cn
+
+:unsupported_locales:
+  - jp
+
+:stathat:
+  :enabled: {OTS_STATHAT_ENABLED}
+  :apikey: {OTS_STATHAT_API_KEY}
+  :default_chart: {OTS_STATHAT_DEFAULT_CHART}
+
+:text:
+  :nonpaid_recipient_text: 'You need to create an account!'
+  :paid_recipient_text: 'Send the secret link via email'
+
+:limits:
+  :create_secret: {OTS_LIMITS_CREATE_SECRET}
+  :create_account: {OTS_LIMITS_CREATE_ACCOUNT}
+  :update_account: {OTS_LIMITS_UPDATE_ACCOUNT}
+  :email_recipient: {OTS_LIMITS_EMAIL_RECIPIENT}
+  :send_feedback: {OTS_LIMITS_SEND_FEEDBACK}
+  :authenticate_session: {OTS_LIMITS_AUTHENTICATE_SESSION}
+  :homepage: {OTS_LIMITS_HOMEPAGE}
+  :dashboard: {OTS_LIMITS_DASHBOARD}
+  :failed_passphrase: {OTS_LIMITS_FAILED_PASSPHRASE}
+  :show_metadata: {OTS_LIMITS_SHOW_METADATA}
+  :show_secret: {OTS_LIMITS_SHOW_SECRET}
+  :burn_secret: {OTS_LIMITS_BURN_SECRET}

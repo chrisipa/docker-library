@@ -20,6 +20,7 @@
         <module>debian</module>
         <module>ab-pom</module>
         <module>java-pom</module>
+        <module>onetimesecret</module>
         <module>pen</module>
     </modules>
 
