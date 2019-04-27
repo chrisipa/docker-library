@@ -3,26 +3,21 @@
 
     <parent>
         <groupId>de.papke.docker</groupId>
-        <artifactId>library</artifactId>
+        <artifactId>debian-pom</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>debian-pom</artifactId>
+    <artifactId>node-pom</artifactId>
 
     <packaging>pom</packaging>
-
+    
     <properties>
-        <debian.version>8</debian.version>
-    </properties>
+        <node.version>8</node.version>
+    </properties>    
 
     <modules>
-        <module>debian-base</module>
-        <module>debian</module>
-        <module>ab-pom</module>
-        <module>java-pom</module>
-        <module>node-pom</module>
-        <module>onetimesecret</module>
-        <module>pen</module>
+        <module>node-base</module>
+        <module>firefox-send</module>
     </modules>
 
 </project>

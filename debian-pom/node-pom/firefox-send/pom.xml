@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.papke.docker</groupId>
+        <artifactId>node-pom</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>firefox-send</artifactId>
+
+    <packaging>docker</packaging>
+
+    <properties>
+        <firefox-send.version>2.5.4</firefox-send.version>
+        <firefox-send.branch>v${firefox-send.version}</firefox-send.branch>
+        <firefox-send.github.url>https://github.com/mozilla/send.git</firefox-send.github.url>
+        <firefox-send.home>/app</firefox-send.home>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>${verbose}</verbose>
+                    <images>
+                        <image>
+                            <name>${registry}/${tenant}/${project.artifactId}</name>
+                            <build>
+                                <tags>
+                                    <tag>${image.tag}</tag>
+                                    <tag>${firefox-send.version}</tag>
+                                </tags>
+                                <from>${registry}/${tenant}/node-base:${node.version}</from>
+                                <optimise>${optimise}</optimise>
+                                <runCmds>
+                                    <!-- install git core -->
+                                    <run>apt-get update</run>
+                                    <run>apt-get install --no-install-recommends -y git-core</run>
+                                    <run>apt-get clean</run>
+                                    
+                                    <!-- clone firefox send repository to app directory -->
+                                    <run>git clone ${firefox-send.github.url} ${firefox-send.home} -b ${firefox-send.branch} --depth=1</run>
+                                    
+                                    <!-- build app using npm -->
+                                    <run>npm i get-firefox geckodriver nsp</run>
+									<run>npm install</run>
+									<run>npm run build</run>
+									
+									<!-- remove uneccessary folders -->
+									<run>rm -rf node_modules</run>
+									<run>rm -rf .git</run>
+									<run>rm -rf static</run>
+									<run>rm -rf test</run>
+									<run>rm -rf docs</run>
+									<run>rm -rf firefox</run>
+									 
+									<!-- create static folder -->
+									<run>mkdir static</run>
+									 
+									<!-- install production dependencies -->
+									<run>npm install --production</run>
+									<run>npm cache clean --force</run>
+									
+									<!-- change app folder permissions -->
+                                    <run>chown -R ${user}.${group} ${firefox-send.home}</run>
+                                </runCmds>
+                                <user>${user}</user>
+                                <entryPoint>
+                                    <exec>
+                                        <args>/${project.artifactId}.sh</args>
+                                    </exec>
+                                </entryPoint>
+                                <workdir>${firefox-send.home}</workdir>
+                                <ports>
+                                    <port>1443</port>
+                                </ports>
+                                <cmd>npm run prod</cmd>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <id>entrypoint-script</id>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>${project.basedir}/src/main/resources</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>**/*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                    <skipRun>true</skipRun>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
