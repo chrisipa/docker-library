@@ -20,6 +20,7 @@ role-strategy:latest
 saml:latest
 simple-theme-plugin:latest
 ssh-slaves:latest
+ssh-agent:latest
 stashNotifier:latest
 subversion:latest
 timestamper:latest
