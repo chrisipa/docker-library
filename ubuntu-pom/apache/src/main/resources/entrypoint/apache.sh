@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # include parent entrypoint script
-source /debian-base.sh
+source /ubuntu-base.sh
 
 # remove old pid before starting
 pidFile="/var/run/apache2/apache2.pid"
