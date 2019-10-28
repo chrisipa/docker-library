@@ -59,7 +59,7 @@
                                     <run>mkdir -p ${ssl.folder}</run>
 
                                     <!-- enable configuration -->
-                                    <run>a2enmod authnz_ldap deflate headers lbmethod_byrequests proxy proxy_ajp proxy_balancer proxy_hcheck proxy_http proxy_wstunnel rewrite ssl</run>
+                                    <run>a2enmod authnz_ldap deflate headers lbmethod_byrequests proxy proxy_ajp proxy_balancer proxy_hcheck proxy_http proxy_wstunnel remoteip rewrite ssl</run>
                                     <run>rm ${apache.home}/sites-enabled/*</run>
                                 </runCmds>
                                 <volumes>
