@@ -60,6 +60,8 @@
 
                                     <!-- enable configuration -->
                                     <run>a2enmod authnz_ldap deflate headers lbmethod_byrequests proxy proxy_ajp proxy_balancer proxy_hcheck proxy_http proxy_wstunnel remoteip rewrite ssl</run>
+                                    <!-- disables CustomLog and Header configuration introduced by ubuntu package as a better config may be supplied below -->
+                                    <run>a2disconf other-vhosts-access-log security</run>
                                     <run>rm ${apache.home}/sites-enabled/*</run>
                                 </runCmds>
                                 <volumes>

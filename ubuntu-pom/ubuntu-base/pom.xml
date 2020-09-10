@@ -35,13 +35,19 @@
                                     <LANG>C.UTF-8</LANG>
                                     <TERM>xterm</TERM>
                                     <SHELL>/bin/bash</SHELL>
+                                    <TZ>Europe/Berlin</TZ>
                                 </env>
                                 <optimise>${optimise}</optimise>
                                 <runCmds>
                                     <!-- install updates and additional packages and cleanup afterwards -->
                                     <run>apt-get update</run>
                                     <run>apt-get dist-upgrade -y</run>
-                                    <run>apt-get install --no-install-recommends -y bzip2 ca-certificates curl nano netcat telnet unzip vim wget</run>
+
+                                    <!-- Otherwise an interactive dialog blocks the build -->
+                                    <run>ln -snf /usr/share/zoneinfo/$TZ /etc/localtime</run>
+                                    <run>echo $TZ > /etc/timezone</run>
+
+                                    <run>apt-get install --no-install-recommends -y -q bzip2 ca-certificates curl nano netcat telnet unzip vim wget</run>
                                     <run>apt-get clean</run>
                                     
                                 	<!-- create account for technical user -->

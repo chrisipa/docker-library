@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <ubuntu.version>18.04</ubuntu.version>
+        <ubuntu.version>20.04</ubuntu.version>
     </properties>
 
     <modules>
