@@ -27,7 +27,6 @@
         <module>jdk-base</module>
         <module>build-tool-pom</module>
         <module>jdk</module>
-        <module>jenkins-pom</module>
         <module>jmeter-pom</module>
         <module>nexus</module>
         <module>sonarqube-pom</module>
