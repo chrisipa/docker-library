@@ -35,7 +35,7 @@
                                 <runCmds>
                                 	<!-- install nodejs -->
                                     <run>curl -sL https://deb.nodesource.com/setup_${node.version}.x | bash -</run>
-                                    <run>apt-get install --no-install-recommends -y nodejs</run>
+                                    <run>apt-get install --no-install-recommends -y nodejs npm</run>
                                     <run>apt-get clean</run>
                                 </runCmds>
                                 <entryPoint>
